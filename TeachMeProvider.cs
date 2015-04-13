@@ -24,7 +24,30 @@ namespace SpanishVerbs
             verb.PreteritePerfect = GetConjugationPerTense(rawData, Tense.PreteritePerfect);
             verb.PresentParticiple = GetGerund(rawData);
 
+
+            if (!ValidateVerb(verb))
+            {
+                throw new Exception();
+            }
+
             return verb;
+        }
+
+        private bool ValidateVerb(Verb verb)
+        {
+            bool isValid = verb.Future.Count > 0 ||
+                verb.Conditional.Count > 0 ||
+                verb.ConditionalPerfect.Count > 0 ||
+                verb.FuturePerfect.Count > 0 ||
+                verb.Future.Count > 0 ||
+                verb.Imperfect.Count > 0 ||
+                verb.PastPerfect.Count > 0 ||
+                verb.Present.Count > 0 ||
+                verb.PresentPerfect.Count > 0 ||
+                verb.Preterite.Count > 0 ||
+                verb.PreteritePerfect.Count > 0;
+
+            return isValid;
         }
 
         private string GetGerund(string rawData)
@@ -41,39 +64,53 @@ namespace SpanishVerbs
 
         private Dictionary<Person, string> GetConjugationPerTense(string rawData, Tense tense)
         {
-            switch (tense)
-            {
-                case Tense.Present:
-                    //break;
-                case Tense.PresentPerfect:
-                    //break;
-                case Tense.Imperfect:
-                    //break;
-                case Tense.Preterite:
-                    //break;
-                case Tense.PastPerfect:
-                    break;
-                case Tense.Future:
-                    break;
-                case Tense.FuturePerfect:
-                    break;
-                case Tense.Conditional:
-                    break;
-                case Tense.ConditionalPerfect:
-                    break;
-                case Tense.PreteritePerfect:
-                    break;
-                default:
-                    //FindMatchesPerTense(tense);
-                    break;
-            }
+            //switch (tense)
+            //{
+            //    case Tense.Present:
+            //        //break;
+            //    case Tense.PresentPerfect:
+            //        //break;
+            //    case Tense.Imperfect:
+            //        //break;
+            //    case Tense.Preterite:
+            //        //break;
+            //    case Tense.PastPerfect:
+            //        break;
+            //    case Tense.Future:
+            //        break;
+            //    case Tense.FuturePerfect:
+            //        break;
+            //    case Tense.Conditional:
+            //        break;
+            //    case Tense.ConditionalPerfect:
+            //        break;
+            //    case Tense.PreteritePerfect:
+            //        break;
+            //    default:
+            //        //FindMatchesPerTense(tense);
+            //        break;
+            //}
 
             return ExtractConjugationFromMatches(FindMatchesPerTense(rawData, GetKeyword(tense)));
         }
 
         private string GetKeyword(Tense tense)
         {
-            return tense.ToString();
+            switch (tense)
+            {
+                case Tense.PresentPerfect:
+                    return "Present Perfect";
+                case Tense.PastPerfect:
+                    return "Past Perfect";
+                case Tense.FuturePerfect:
+                    return "Future Perfect";
+                case Tense.ConditionalPerfect:
+                    return "Conditional Perfect";
+                case Tense.PreteritePerfect:
+                    return "Preterite Perfect";
+                default:
+                    return tense.ToString();
+            }
         }
 
         private Dictionary<Person, string> ExtractConjugationFromMatches(MatchCollection matchCollection)

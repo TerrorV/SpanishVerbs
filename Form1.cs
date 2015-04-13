@@ -35,76 +35,86 @@ namespace SpanishVerbs
 
         private string TableFromBabLa(string text)
         {
-            //Regex rxVerbs = new Regex(@"<h5 [^>]*>(Indicativo presente|Indicativo pretérito perfecto compuest|Indicativo pretérito perfecto simple)</h5>(<span [^>]*>([\w/]*)</span>\s*(\w*)(<br>)*)*");
-            Regex rxVerbs = new Regex(@"<h5 [^>]*>(Indicativo presente|Indicativo pretérito perfecto compuesto|Indicativo pretérito perfecto simple)</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*");
+            ////////Regex rxVerbs = new Regex(@"<h5 [^>]*>(Indicativo presente|Indicativo pretérito perfecto compuest|Indicativo pretérito perfecto simple)</h5>(<span [^>]*>([\w/]*)</span>\s*(\w*)(<br>)*)*");
+            //////Regex rxVerbs = new Regex(@"<h5 [^>]*>(Indicativo presente|Indicativo pretérito perfecto compuesto|Indicativo pretérito perfecto simple)</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*");
 
-            MatchCollection matches = rxVerbs.Matches(text);
-            if (matches.Count == 0)
-            {
-                return string.Empty;
-            }
+            //////MatchCollection matches = rxVerbs.Matches(text);
+            //////if (matches.Count == 0)
+            //////{
+            //////    return string.Empty;
+            //////}
 
-            string[,] verbGrid = new string[matches.Count + 1, 6];
-            verbGrid[0, 0] = "Yo";
-            verbGrid[0, 1] = "Tu";
-            verbGrid[0, 2] = "El/Ella/Ud";
-            verbGrid[0, 3] = "Nosotros/as";
-            verbGrid[0, 4] = "Vosotros/as";
-            verbGrid[0, 5] = "Ellos/Ellas/Uds";
+            //////string[,] verbGrid = new string[matches.Count + 1, 6];
+            //////verbGrid[0, 0] = "Yo";
+            //////verbGrid[0, 1] = "Tu";
+            //////verbGrid[0, 2] = "El/Ella/Ud";
+            //////verbGrid[0, 3] = "Nosotros/as";
+            //////verbGrid[0, 4] = "Vosotros/as";
+            //////verbGrid[0, 5] = "Ellos/Ellas/Uds";
 
-            for (int i = 0; i < matches.Count; i++)
-            {
-                for (int j = 0; j < matches[0].Groups[4].Captures.Count; j++)
-                {
-                    verbGrid[i + 1, j] = matches[i].Groups[4].Captures[j].Value;
-                }
-            }
+            //////for (int i = 0; i < matches.Count; i++)
+            //////{
+            //////    for (int j = 0; j < matches[0].Groups[4].Captures.Count; j++)
+            //////    {
+            //////        verbGrid[i + 1, j] = matches[i].Groups[4].Captures[j].Value;
+            //////    }
+            //////}
             
-            Regex rxGerunds = new Regex(@"<h5 [^>]*>(Gerundio)</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*");
-            MatchCollection matchesGerund = rxGerunds.Matches(textBox1.Text);
+            //////Regex rxGerunds = new Regex(@"<h5 [^>]*>(Gerundio)</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*");
+            //////MatchCollection matchesGerund = rxGerunds.Matches(textBox1.Text);
             
-            return TableFromArray(matches.Count, matchesGerund[0].Groups[4].Value, verbGrid);
+            //////return TableFromArray(matches.Count, matchesGerund[0].Groups[4].Value, verbGrid);
+
+            return TableFromVerb(new BabLaProvider().GetConjugation(textBox1.Text));
         }
 
         private string TableFrom123Spanish()
         {
-            //Regex rx = new Regex(@"<tr>\s*<td [^>]*><a[^>]*>([\w\s-]+)(</a>)*\s*</td>\s*(<td[^>]*>([^<]+)</td>\s*)+</tr>");
-            Regex rxVerbsNew = new Regex(@"(<td\s+class=""conjugation[^""]*[^>]*>(\w+)[^<]*</td>\s+)+");
-            Regex rxVerbs = new Regex(@"<tr>\s*<td [^>]*><a[^>]*title=" + "\"" + @"(Present Tense Indicative|Present perfect Indicative|Preterite)[^>]*>(Present|Present Perfect|Imperfect|Preterite)(</a>)*\s*</td>\s*(<td[^>]*>([^<]+)</td>\s*)+</tr>");
-            //Regex rxGerunds = new Regex(@"Present Participle.*\s*<td.*conjugation[^>]*>(.*)</td>");
-            Regex rxGerunds = new Regex(@"Present Participle.*\s*(<td.*conjugation english[^>]*>.*</td>)*\s*(<td.*conjugation[^>]*>(.*)</td>)");
+            ////////Regex rx = new Regex(@"<tr>\s*<td [^>]*><a[^>]*>([\w\s-]+)(</a>)*\s*</td>\s*(<td[^>]*>([^<]+)</td>\s*)+</tr>");
+            //////Regex rxVerbsNew = new Regex(@"(<td\s+class=""conjugation[^""]*[^>]*>(\w+)[^<]*</td>\s+)+");
+            //////Regex rxVerbs = new Regex(@"<tr>\s*<td [^>]*><a[^>]*title=" + "\"" + @"(Present Tense Indicative|Present perfect Indicative|Preterite)[^>]*>(Present|Present Perfect|Imperfect|Preterite)(</a>)*\s*</td>\s*(<td[^>]*>([^<]+)</td>\s*)+</tr>");
+            ////////Regex rxGerunds = new Regex(@"Present Participle.*\s*<td.*conjugation[^>]*>(.*)</td>");
+            //////Regex rxGerunds = new Regex(@"Present Participle.*\s*(<td.*conjugation english[^>]*>.*</td>)*\s*(<td.*conjugation[^>]*>(.*)</td>)");
 
-            MatchCollection matches = rxVerbs.Matches(textBox1.Text);
-            MatchCollection matchesGerund = rxGerunds.Matches(textBox1.Text);
-            List<string> transponedMatches = new List<string>();
-            //transponedMatches.AddRange(new string[matches.Count]);
-            if (matches.Count == 0)
+            //////MatchCollection matches = rxVerbs.Matches(textBox1.Text);
+            //////MatchCollection matchesGerund = rxGerunds.Matches(textBox1.Text);
+            //////List<string> transponedMatches = new List<string>();
+            ////////transponedMatches.AddRange(new string[matches.Count]);
+            //////if (matches.Count == 0)
+            //////{
+            //////    return string.Empty;
+            //////}
+
+            //////string[,] verbGrid = new string[matches.Count + 1, 6];
+            //////verbGrid[0, 0] = "Yo";
+            //////verbGrid[0, 1] = "Tu";
+            //////verbGrid[0, 2] = "El/Ella/Ud";
+            //////verbGrid[0, 3] = "Nosotros/as";
+            //////verbGrid[0, 4] = "Vosotros/as";
+            //////verbGrid[0, 5] = "Ellos/Ellas/Uds";
+            //////for (int i = 0; i < matches.Count; i++)
+            //////{
+            //////    Regex rxRow = new Regex(@"<td[^>]*>([^<]+)</td>\s*");
+            //////    var rowsMatches = rxRow.Matches(matches[i].Groups[0].Value);
+            //////    Match[] matchesArray = new Match[rowsMatches.Count];
+            //////    rowsMatches.CopyTo(matchesArray, 0);
+            //////    List<Match> filteredRows = matchesArray.Where(m => !m.Value.Contains("english")).ToList();
+
+            //////    for (int j = 0; j < filteredRows.Count; j++)
+            //////    {
+            //////        verbGrid[i + 1, j] = filteredRows[j].Groups[1].Value;
+            //////    }
+            //////}
+
+            //////return TableFromArray(matches.Count, matchesGerund[0].Groups[matchesGerund[0].Groups.Count - 1].Value, verbGrid);
+            try
+            {
+                return TableFromVerb(new TeachMeProvider().GetConjugation(textBox1.Text));
+            }
+            catch
             {
                 return string.Empty;
             }
-
-            string[,] verbGrid = new string[matches.Count + 1, 6];
-            verbGrid[0, 0] = "Yo";
-            verbGrid[0, 1] = "Tu";
-            verbGrid[0, 2] = "El/Ella/Ud";
-            verbGrid[0, 3] = "Nosotros/as";
-            verbGrid[0, 4] = "Vosotros/as";
-            verbGrid[0, 5] = "Ellos/Ellas/Uds";
-            for (int i = 0; i < matches.Count; i++)
-            {
-                Regex rxRow = new Regex(@"<td[^>]*>([^<]+)</td>\s*");
-                var rowsMatches = rxRow.Matches(matches[i].Groups[0].Value);
-                Match[] matchesArray = new Match[rowsMatches.Count];
-                rowsMatches.CopyTo(matchesArray, 0);
-                List<Match> filteredRows = matchesArray.Where(m => !m.Value.Contains("english")).ToList();
-
-                for (int j = 0; j < filteredRows.Count; j++)
-                {
-                    verbGrid[i + 1, j] = filteredRows[j].Groups[1].Value;
-                }
-            }
-
-            return TableFromArray(matches.Count, matchesGerund[0].Groups[matchesGerund[0].Groups.Count - 1].Value, verbGrid);
         }
 
         private static string TableFromArray(int numberOfTenses, string gerund, string[,] verbGrid)
@@ -127,16 +137,16 @@ namespace SpanishVerbs
 
         private static string TableFromVerb(Verb verb)
         {
-            int tenses = verb.Conditional.Count >0?1:0 +
-                         verb.ConditionalPerfect.Count >0?1:0 +
-                         verb.Future.Count >0?1:0 +
-                         verb.FuturePerfect.Count >0?1:0 +
-                         verb.Imperfect.Count >0?1:0 +
-                         verb.PastPerfect.Count >0?1:0 +
-                         verb.Present.Count >0?1:0 +
-                         verb.PresentPerfect.Count >0?1:0 +
-                         verb.Preterite.Count >0?1:0 +
-                         verb.PreteritePerfect.Count >0?1:0;
+            int tenses = (verb.Conditional.Count >0?1:0) +
+                         (verb.ConditionalPerfect.Count >0?1:0) +
+                         (verb.Future.Count >0?1:0) +
+                         (verb.FuturePerfect.Count >0?1:0) +
+                         (verb.Imperfect.Count >0?1:0) +
+                         (verb.PastPerfect.Count >0?1:0) +
+                         (verb.Present.Count >0?1:0) +
+                         (verb.PresentPerfect.Count >0?1:0) +
+                         (verb.Preterite.Count >0?1:0) +
+                         (verb.PreteritePerfect.Count >0?1:0);
 
             string[,] verbGrid = new string[4, 6];
             verbGrid[0, 0] = "Yo";
@@ -153,7 +163,7 @@ namespace SpanishVerbs
                 verbGrid[3, i] = verb.Preterite[(Person)i];
             }
 
-            return TableFromArray(tenses, verb.PresentParticiple, verbGrid);
+            return TableFromArray(3, verb.PresentParticiple, verbGrid);
 
         }
 
