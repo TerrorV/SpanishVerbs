@@ -69,7 +69,7 @@ namespace SpanishVerbs
         private string TableFrom123Spanish()
         {
             //Regex rx = new Regex(@"<tr>\s*<td [^>]*><a[^>]*>([\w\s-]+)(</a>)*\s*</td>\s*(<td[^>]*>([^<]+)</td>\s*)+</tr>");
-            //Regex rxVerbs = new Regex(@"<tr>\s*<td [^>]*><a[^>]*>(Present|Present Perfect|Imperfect|Preterite)(</a>)*\s*</td>\s*(<td[^>]*>([^<]+)</td>\s*)+</tr>");
+            Regex rxVerbsNew = new Regex(@"(<td\s+class=""conjugation[^""]*[^>]*>(\w+)[^<]*</td>\s+)+");
             Regex rxVerbs = new Regex(@"<tr>\s*<td [^>]*><a[^>]*title=" + "\"" + @"(Present Tense Indicative|Present perfect Indicative|Preterite)[^>]*>(Present|Present Perfect|Imperfect|Preterite)(</a>)*\s*</td>\s*(<td[^>]*>([^<]+)</td>\s*)+</tr>");
             //Regex rxGerunds = new Regex(@"Present Participle.*\s*<td.*conjugation[^>]*>(.*)</td>");
             Regex rxGerunds = new Regex(@"Present Participle.*\s*(<td.*conjugation english[^>]*>.*</td>)*\s*(<td.*conjugation[^>]*>(.*)</td>)");
