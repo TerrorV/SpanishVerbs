@@ -29,10 +29,12 @@ namespace SpanishVerbs
 
         private string GetGerund(string rawData)
         {
-            Regex rxGerunds = new Regex(@"Present Participle.*\s*(<td.*conjugation english[^>]*>.*</td>)*\s*(<td.*conjugation[^>]*>(.*)</td>)");
+            Regex rxGerunds = new Regex(@"<h5 [^>]*>(Gerundio)</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*");
             MatchCollection matchesGerund = rxGerunds.Matches(rawData);
+            if (matchesGerund.Count == 0)
+                return string.Empty;
 
-            return matchesGerund[0].Groups[matchesGerund[0].Groups.Count - 1].Value;
+            return matchesGerund[0].Groups[matchesGerund[0].Groups.Count - 2].Value;
         }
 
         private Dictionary<Person, string> GetConjugationPerTense(string rawData, Tense tense)
@@ -69,16 +71,43 @@ namespace SpanishVerbs
 
         private string GetKeyword(Tense tense)
         {
+            switch (tense)
+            {
+                case Tense.Present:
+                    return "Indicativo presente";
+                case Tense.PresentPerfect:
+                    return "Indicativo pretérito perfecto compuesto";
+                case Tense.Imperfect:
+                    return "Indicativo pretérito imperfecto";
+                case Tense.Preterite:
+                    return "Indicativo pretérito perfecto simple";
+                case Tense.PastPerfect:
+                    return "Indicativo pretérito pluscuamperfecto";
+                case Tense.Future:
+                    return "Indicativo futuro";
+                case Tense.FuturePerfect:
+                    return "Indicativo futuro perfecto";
+                case Tense.Conditional:
+                    return "Condicional simple";
+                case Tense.ConditionalPerfect:
+                    return "Condicional compuesto";
+                case Tense.PreteritePerfect:
+                    return "Indicativo pretérito anterior";
+                default:
+                    break;
+            }
             return tense.ToString();
         }
 
         private Dictionary<Person, string> ExtractConjugationFromMatches(MatchCollection matchCollection)
         {
             Dictionary<Person, string> conjugation = new Dictionary<Person, string>();
+            if (matchCollection.Count < 6)
+                return conjugation;
 
             for (int i = 0; i < 6; i++)
             {
-                conjugation.Add((Person)i, matchCollection[i].Value);
+                conjugation.Add((Person)i, matchCollection[i].Groups[2].Value);
             }
 
             return conjugation;
@@ -86,10 +115,9 @@ namespace SpanishVerbs
 
         MatchCollection FindMatchesPerTense(string page, string tenseKeyword)
         {
-            Regex rxVerbs = new Regex(@"<h5 [^>]*>(Indicativo presente|Indicativo pretérito perfecto compuesto|Indicativo pretérito perfecto simple)</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*");
+            Regex rxTense = new Regex(string.Format(@"<h5 [^>]*>({0})</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*", tenseKeyword));
 
-            Regex rxTense = new Regex(string.Format(@"class=""tense_heading"">\s*<a[^>]*title=""[\s\w-]+""[^>]*>({0}).*\s*</td>\s*(<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+)+</tr>", tenseKeyword));
-            Regex rxRow = new Regex(@"<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+");
+            Regex rxRow = new Regex(@"<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*");
 
             Match tenseMatch = rxTense.Match(page);
 

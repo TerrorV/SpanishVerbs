@@ -125,6 +125,38 @@ namespace SpanishVerbs
             return sb.ToString();
         }
 
+        private static string TableFromVerb(Verb verb)
+        {
+            int tenses = verb.Conditional.Count >0?1:0 +
+                         verb.ConditionalPerfect.Count >0?1:0 +
+                         verb.Future.Count >0?1:0 +
+                         verb.FuturePerfect.Count >0?1:0 +
+                         verb.Imperfect.Count >0?1:0 +
+                         verb.PastPerfect.Count >0?1:0 +
+                         verb.Present.Count >0?1:0 +
+                         verb.PresentPerfect.Count >0?1:0 +
+                         verb.Preterite.Count >0?1:0 +
+                         verb.PreteritePerfect.Count >0?1:0;
+
+            string[,] verbGrid = new string[4, 6];
+            verbGrid[0, 0] = "Yo";
+            verbGrid[0, 1] = "Tu";
+            verbGrid[0, 2] = "El/Ella/Ud";
+            verbGrid[0, 3] = "Nosotros/as";
+            verbGrid[0, 4] = "Vosotros/as";
+            verbGrid[0, 5] = "Ellos/Ellas/Uds";
+
+            for (int i = 0; i < 6; i++)
+            {
+                verbGrid[1, i] = verb.Present[(Person)i];
+                verbGrid[2, i] = verb.PresentPerfect[(Person)i];
+                verbGrid[3, i] = verb.Preterite[(Person)i];
+            }
+
+            return TableFromArray(tenses, verb.PresentParticiple, verbGrid);
+
+        }
+
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
