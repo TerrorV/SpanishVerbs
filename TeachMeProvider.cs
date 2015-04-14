@@ -121,7 +121,7 @@ namespace SpanishVerbs
 
             for (int i = 0; i < 6; i++)
             {
-                conjugation.Add((Person)i, matchCollection[i].Groups[1].Value);
+                conjugation.Add((Person)i, matchCollection[i].Groups[2].Value);
             }
 
             return conjugation;
@@ -130,7 +130,7 @@ namespace SpanishVerbs
         MatchCollection FindMatchesPerTense(string page, string tenseKeyword)
         {
             Regex rxTense = new Regex(string.Format(@"class=""tense_heading"">\s*<a[^>]*title=""[\s\w-]+""[^>]*>({0}).*\s*</td>\s*(<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+)+</tr>",tenseKeyword));
-            Regex rxRow = new Regex(@"<td\s+class=""conjugation ""[^>]*>(\w+|\w+<div[^>]*>OR</div>[\w&;]+)[^<]*</td>\s+");
+            Regex rxRow = new Regex(@"<td\s+class=""conjugation (irregular)*""[^>]*>(\w+|\w+<div[^>]*>OR</div>[\w&;]+)[^<]*</td>\s+");
 
             Match tenseMatch = rxTense.Match(page);
 
