@@ -214,17 +214,22 @@ namespace SpanishVerbs
             if (string.IsNullOrEmpty(textBox1.Text))
                 return;
 
-            textBox2.Text = TableFrom123Spanish();
-            if (string.IsNullOrEmpty(textBox2.Text) || checkBox1.Checked)
+            try
             {
+                textBox2.Text = TableFrom123Spanish();
+                if (string.IsNullOrEmpty(textBox2.Text) || checkBox1.Checked)
+                {
 
-                textBox1.Text = CallWebSite("http://en.bab.la/conjugation/spanish/{0}");
+                    textBox1.Text = CallWebSite("http://en.bab.la/conjugation/spanish/{0}");
 
-                if (string.IsNullOrEmpty(textBox1.Text))
-                    return;
+                    if (string.IsNullOrEmpty(textBox1.Text))
+                        return;
 
-                textBox2.Text = TableFromBabLa(textBox1.Text);
+                    textBox2.Text = TableFromBabLa(textBox1.Text);
+                }
             }
+            catch
+            { }
         }
 
         private string CallWebSite(string url)
