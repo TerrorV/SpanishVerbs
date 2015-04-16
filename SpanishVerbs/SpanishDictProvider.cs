@@ -9,30 +9,6 @@ namespace SpanishVerbs
 {
     public class SpanishDictProvider : ProviderBase, IConjugationProvider
     {
-        //public Verb GetConjugation(string rawData)
-        //{
-        //    Verb verb = new Verb();
-        //    verb.Present = GetConjugationPerTense(rawData, Tense.Present);
-        //    verb.PresentPerfect = GetConjugationPerTense(rawData, Tense.PresentPerfect);
-        //    verb.Imperfect = GetConjugationPerTense(rawData, Tense.Imperfect);
-        //    verb.Preterite = GetConjugationPerTense(rawData, Tense.Preterite);
-        //    verb.PastPerfect = GetConjugationPerTense(rawData, Tense.PastPerfect);
-        //    verb.Future = GetConjugationPerTense(rawData, Tense.Future);
-        //    verb.FuturePerfect = GetConjugationPerTense(rawData, Tense.FuturePerfect);
-        //    verb.Conditional = GetConjugationPerTense(rawData, Tense.Conditional);
-        //    verb.ConditionalPerfect = GetConjugationPerTense(rawData, Tense.ConditionalPerfect);
-        //    verb.PreteritePerfect = GetConjugationPerTense(rawData, Tense.PreteritePerfect);
-        //    verb.PresentParticiple = GetGerund(rawData);
-
-
-        //    if (!ValidateVerb(verb))
-        //    {
-        //        throw new Exception();
-        //    }
-
-        //    return verb;
-        //}
-
         public override string GetGerund(string rawData)
         {
             throw new NotImplementedException();
@@ -54,11 +30,6 @@ namespace SpanishVerbs
 
             return isValid;
         }
-
-        //private Dictionary<Person, string> GetConjugationPerTense(string rawData, Tense tense)
-        //{
-        //    return ExtractConjugationFromMatches(FindMatchesPerTense(rawData, GetKeyword(tense)));
-        //}
 
         public override string GetKeyword(Tense tense)
         {

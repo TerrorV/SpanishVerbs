@@ -7,32 +7,32 @@ using System.Threading.Tasks;
 
 namespace SpanishVerbs
 {
-    public class BabLaProvider:IConjugationProvider
+    public class BabLaProvider:ProviderBase, IConjugationProvider
     {
-        public Verb GetConjugation(string rawData)
-        {
-            Verb verb = new Verb();
-            verb.Present = GetConjugationPerTense(rawData, Tense.Present);
-            verb.PresentPerfect = GetConjugationPerTense(rawData, Tense.PresentPerfect);
-            verb.Imperfect = GetConjugationPerTense(rawData, Tense.Imperfect);
-            verb.Preterite = GetConjugationPerTense(rawData, Tense.Preterite);
-            verb.PastPerfect = GetConjugationPerTense(rawData, Tense.PastPerfect);
-            verb.Future = GetConjugationPerTense(rawData, Tense.Future);
-            verb.FuturePerfect = GetConjugationPerTense(rawData, Tense.FuturePerfect);
-            verb.Conditional = GetConjugationPerTense(rawData, Tense.Conditional);
-            verb.ConditionalPerfect = GetConjugationPerTense(rawData, Tense.ConditionalPerfect);
-            verb.PreteritePerfect = GetConjugationPerTense(rawData, Tense.PreteritePerfect);
-            verb.PresentParticiple = GetGerund(rawData);
+        //public Verb GetConjugation(string rawData)
+        //{
+        //    Verb verb = new Verb();
+        //    verb.Present = GetConjugationPerTense(rawData, Tense.Present);
+        //    verb.PresentPerfect = GetConjugationPerTense(rawData, Tense.PresentPerfect);
+        //    verb.Imperfect = GetConjugationPerTense(rawData, Tense.Imperfect);
+        //    verb.Preterite = GetConjugationPerTense(rawData, Tense.Preterite);
+        //    verb.PastPerfect = GetConjugationPerTense(rawData, Tense.PastPerfect);
+        //    verb.Future = GetConjugationPerTense(rawData, Tense.Future);
+        //    verb.FuturePerfect = GetConjugationPerTense(rawData, Tense.FuturePerfect);
+        //    verb.Conditional = GetConjugationPerTense(rawData, Tense.Conditional);
+        //    verb.ConditionalPerfect = GetConjugationPerTense(rawData, Tense.ConditionalPerfect);
+        //    verb.PreteritePerfect = GetConjugationPerTense(rawData, Tense.PreteritePerfect);
+        //    verb.PresentParticiple = GetGerund(rawData);
 
-            if(! ValidateVerb(verb))
-            {
-                throw new Exception();
-            }
+        //    if(! ValidateVerb(verb))
+        //    {
+        //        throw new Exception();
+        //    }
 
-            return verb;
-        }
+        //    return verb;
+        //}
 
-        private bool ValidateVerb(Verb verb)
+        public override bool ValidateVerb(Verb verb)
         {
             bool isValid = verb.Future.Count > 0 ||
                 verb.Conditional.Count > 0 ||
@@ -49,7 +49,7 @@ namespace SpanishVerbs
                 return isValid;
         }
 
-        private string GetGerund(string rawData)
+        public override string GetGerund(string rawData)
         {
             Regex rxGerunds = new Regex(@"<h5 [^>]*>(Gerundio)</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*");
             MatchCollection matchesGerund = rxGerunds.Matches(rawData);
@@ -59,39 +59,39 @@ namespace SpanishVerbs
             return matchesGerund[0].Groups[matchesGerund[0].Groups.Count - 2].Value;
         }
 
-        private Dictionary<Person, string> GetConjugationPerTense(string rawData, Tense tense)
-        {
-            //switch (tense)
-            //{
-            //    case Tense.Present:
-            //    //break;
-            //    case Tense.PresentPerfect:
-            //    //break;
-            //    case Tense.Imperfect:
-            //    //break;
-            //    case Tense.Preterite:
-            //    //break;
-            //    case Tense.PastPerfect:
-            //        break;
-            //    case Tense.Future:
-            //        break;
-            //    case Tense.FuturePerfect:
-            //        break;
-            //    case Tense.Conditional:
-            //        break;
-            //    case Tense.ConditionalPerfect:
-            //        break;
-            //    case Tense.PreteritePerfect:
-            //        break;
-            //    default:
-            //        //FindMatchesPerTense(tense);
-            //        break;
-            //}
+        //private Dictionary<Person, string> GetConjugationPerTense(string rawData, Tense tense)
+        //{
+        //    //switch (tense)
+        //    //{
+        //    //    case Tense.Present:
+        //    //    //break;
+        //    //    case Tense.PresentPerfect:
+        //    //    //break;
+        //    //    case Tense.Imperfect:
+        //    //    //break;
+        //    //    case Tense.Preterite:
+        //    //    //break;
+        //    //    case Tense.PastPerfect:
+        //    //        break;
+        //    //    case Tense.Future:
+        //    //        break;
+        //    //    case Tense.FuturePerfect:
+        //    //        break;
+        //    //    case Tense.Conditional:
+        //    //        break;
+        //    //    case Tense.ConditionalPerfect:
+        //    //        break;
+        //    //    case Tense.PreteritePerfect:
+        //    //        break;
+        //    //    default:
+        //    //        //FindMatchesPerTense(tense);
+        //    //        break;
+        //    //}
 
-            return ExtractConjugationFromMatches(FindMatchesPerTense(rawData, GetKeyword(tense)));
-        }
+        //    return ExtractConjugationFromMatches(FindMatchesPerTense(rawData, GetKeyword(tense)));
+        //}
 
-        private string GetKeyword(Tense tense)
+        public override string GetKeyword(Tense tense)
         {
             switch (tense)
             {
@@ -121,7 +121,7 @@ namespace SpanishVerbs
             return tense.ToString();
         }
 
-        private Dictionary<Person, string> ExtractConjugationFromMatches(MatchCollection matchCollection)
+        public override Dictionary<Person, string> ExtractConjugationFromMatches(MatchCollection matchCollection)
         {
             Dictionary<Person, string> conjugation = new Dictionary<Person, string>();
             if (matchCollection.Count < 6)
@@ -135,7 +135,7 @@ namespace SpanishVerbs
             return conjugation;
         }
 
-        MatchCollection FindMatchesPerTense(string page, string tenseKeyword)
+        public override MatchCollection FindMatchesPerTense(string page, string tenseKeyword)
         {
             Regex rxTense = new Regex(string.Format(@"<h5 [^>]*>({0})</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*", tenseKeyword));
 
