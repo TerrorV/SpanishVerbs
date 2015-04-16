@@ -59,10 +59,10 @@ namespace SpanishVerbs
             //////        verbGrid[i + 1, j] = matches[i].Groups[4].Captures[j].Value;
             //////    }
             //////}
-            
+
             //////Regex rxGerunds = new Regex(@"<h5 [^>]*>(Gerundio)</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*");
             //////MatchCollection matchesGerund = rxGerunds.Matches(textBox1.Text);
-            
+
             //////return TableFromArray(matches.Count, matchesGerund[0].Groups[4].Value, verbGrid);
 
             return TableFromVerb(new BabLaProvider().GetConjugation(textBox1.Text));
@@ -137,16 +137,16 @@ namespace SpanishVerbs
 
         private static string TableFromVerb(Verb verb)
         {
-            int tenses = (verb.Conditional.Count >0?1:0) +
-                         (verb.ConditionalPerfect.Count >0?1:0) +
-                         (verb.Future.Count >0?1:0) +
-                         (verb.FuturePerfect.Count >0?1:0) +
-                         (verb.Imperfect.Count >0?1:0) +
-                         (verb.PastPerfect.Count >0?1:0) +
-                         (verb.Present.Count >0?1:0) +
-                         (verb.PresentPerfect.Count >0?1:0) +
-                         (verb.Preterite.Count >0?1:0) +
-                         (verb.PreteritePerfect.Count >0?1:0);
+            int tenses = (verb.Conditional.Count > 0 ? 1 : 0) +
+                         (verb.ConditionalPerfect.Count > 0 ? 1 : 0) +
+                         (verb.Future.Count > 0 ? 1 : 0) +
+                         (verb.FuturePerfect.Count > 0 ? 1 : 0) +
+                         (verb.Imperfect.Count > 0 ? 1 : 0) +
+                         (verb.PastPerfect.Count > 0 ? 1 : 0) +
+                         (verb.Present.Count > 0 ? 1 : 0) +
+                         (verb.PresentPerfect.Count > 0 ? 1 : 0) +
+                         (verb.Preterite.Count > 0 ? 1 : 0) +
+                         (verb.PreteritePerfect.Count > 0 ? 1 : 0);
 
             string[,] verbGrid = new string[4, 6];
             verbGrid[0, 0] = "Yo";
@@ -230,6 +230,31 @@ namespace SpanishVerbs
             }
             catch
             { }
+            try
+            {
+                textBox1.Text = CallWebSite("http://www.spanishdict.com/conjugate/{0}");
+                if (string.IsNullOrEmpty(textBox1.Text))
+                    return;
+                textBox2.Text = TableFromSpanishDict(textBox1.Text);
+
+            }
+            catch
+            {
+
+                throw;
+            }
+        }
+
+        private string TableFromSpanishDict(string p)
+        {
+            try
+            {
+                return TableFromVerb(new SpanishDictProvider().GetConjugation(textBox1.Text));
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         private string CallWebSite(string url)
