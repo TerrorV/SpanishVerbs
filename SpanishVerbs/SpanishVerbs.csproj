@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="BabLaProvider.cs" />
     <Compile Include="IConjugationProvider.cs" />
+    <Compile Include="SpanishDictProvider.cs" />
     <Compile Include="TeachMeProvider.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
