@@ -9,6 +9,10 @@ namespace SpanishVerbs
 {
     public class TeachMeProvider :ProviderBase, IConjugationProvider
     {
+        public TeachMeProvider(string providerUrl):base(providerUrl)
+        {
+
+        }
         //public Verb GetConjugation(string rawData)
         //{
         //    Verb verb = new Verb();
@@ -59,7 +63,7 @@ namespace SpanishVerbs
             if (!match.Success)
                 return string.Empty;
 
-            return rxRow.Matches( match.Value)[1].Groups[1].Value;
+            return rxRow.Matches( match.Value)[0].Groups[1].Value;
         }
 
         //private Dictionary<Person, string> GetConjugationPerTense(string rawData, Tense tense)
@@ -107,7 +111,7 @@ namespace SpanishVerbs
                 case Tense.ConditionalPerfect:
                     return "Conditional Perfect";
                 case Tense.PreteritePerfect:
-                    return "Preterite Perfect";
+                    return "Past Perfect Simple";
                 default:
                     return tense.ToString();
             }

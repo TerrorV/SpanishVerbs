@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace SpanishVerbs.Test
 {
@@ -14,23 +15,24 @@ namespace SpanishVerbs.Test
 </section>
 <div class=""bab20""></div>
 ";
-            Verb verb = new BabLaProvider().GetConjugation(page);
+            Dictionary<Person,string> tense = new BabLaProvider("").GetConjugationPerTense(page,Tense.Present);
 
-            Assert.AreEqual(6, verb.Present.Count);
-            Assert.AreEqual(6, verb.Imperfect.Count);
-            Assert.AreEqual("como", verb.Present[Person.FirstSingle]);
-            Assert.AreEqual("comes", verb.Present[Person.SecondSingle]);
-            Assert.AreEqual("come", verb.Present[Person.ThirdSingle]);
-            Assert.AreEqual("comemos", verb.Present[Person.FirstPlural]);
-            Assert.AreEqual("coméis", verb.Present[Person.SecondPlural]);
-            Assert.AreEqual("comen", verb.Present[Person.ThirdPlural]);
+            Assert.AreEqual(6, tense.Count);
+            Assert.AreEqual("como", tense[Person.FirstSingle]);
+            Assert.AreEqual("comes", tense[Person.SecondSingle]);
+            Assert.AreEqual("come", tense[Person.ThirdSingle]);
+            Assert.AreEqual("comemos", tense[Person.FirstPlural]);
+            Assert.AreEqual("coméis", tense[Person.SecondPlural]);
+            Assert.AreEqual("comen", tense[Person.ThirdPlural]);
 
-            Assert.AreEqual("comía", verb.Imperfect[Person.FirstSingle]);
-            Assert.AreEqual("comías", verb.Imperfect[Person.SecondSingle]);
-            Assert.AreEqual("comía", verb.Imperfect[Person.ThirdSingle]);
-            Assert.AreEqual("comíamos", verb.Imperfect[Person.FirstPlural]);
-            Assert.AreEqual("comíais", verb.Imperfect[Person.SecondPlural]);
-            Assert.AreEqual("comían", verb.Imperfect[Person.ThirdPlural]);
+            tense = new BabLaProvider("").GetConjugationPerTense(page, Tense.Imperfect);
+            Assert.AreEqual(6, tense.Count);
+            Assert.AreEqual("comía", tense[Person.FirstSingle]);
+            Assert.AreEqual("comías", tense[Person.SecondSingle]);
+            Assert.AreEqual("comía", tense[Person.ThirdSingle]);
+            Assert.AreEqual("comíamos", tense[Person.FirstPlural]);
+            Assert.AreEqual("comíais", tense[Person.SecondPlural]);
+            Assert.AreEqual("comían", tense[Person.ThirdPlural]);
         }
 
         [TestMethod]
@@ -41,9 +43,9 @@ namespace SpanishVerbs.Test
 <span class=""babGy"">vosotros/vosotras</span> comed<br><span class=""babGy"">ellos/ellas</span> coman<br></p></div><div class=""span4 result-left""><p><h5 class=""h5-conj"">Gerundio</h5><span class=""babGy""></span> comiendo<br></p></div><div class=""span4 result-left""><p><h5 class=""h5-conj"">Participio</h5><span class=""babGy""></span> comido<br></p></div></div></div></div>
 ";
 
-            Verb verb = new BabLaProvider().GetConjugation(page);
+            string gerund = new BabLaProvider("").GetGerund(page);
 
-            Assert.AreEqual("comiendo", verb.PresentParticiple);
+            Assert.AreEqual("comiendo", gerund);
         }
     }
 }

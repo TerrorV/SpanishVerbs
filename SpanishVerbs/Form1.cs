@@ -15,9 +15,14 @@ namespace SpanishVerbs
 {
     public partial class Form1 : Form
     {
+                    List<ProviderBase> _providers = new List<ProviderBase>();
+
         public Form1()
         {
             InitializeComponent();
+            _providers.Add(new TeachMeProvider("http://www.123teachme.com/spanish_verb_conjugation/{0}"));
+            _providers.Add(new BabLaProvider("http://en.bab.la/conjugation/spanish/{0}"));
+            _providers.Add(new SpanishDictProvider("http://www.spanishdict.com/conjugate/{0}"));
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -33,89 +38,89 @@ namespace SpanishVerbs
             ////}
         }
 
-        private string TableFromBabLa(string text)
-        {
-            ////////Regex rxVerbs = new Regex(@"<h5 [^>]*>(Indicativo presente|Indicativo pretérito perfecto compuest|Indicativo pretérito perfecto simple)</h5>(<span [^>]*>([\w/]*)</span>\s*(\w*)(<br>)*)*");
-            //////Regex rxVerbs = new Regex(@"<h5 [^>]*>(Indicativo presente|Indicativo pretérito perfecto compuesto|Indicativo pretérito perfecto simple)</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*");
+        //private string TableFromBabLa(string text)
+        //{
+        //    ////////Regex rxVerbs = new Regex(@"<h5 [^>]*>(Indicativo presente|Indicativo pretérito perfecto compuest|Indicativo pretérito perfecto simple)</h5>(<span [^>]*>([\w/]*)</span>\s*(\w*)(<br>)*)*");
+        //    //////Regex rxVerbs = new Regex(@"<h5 [^>]*>(Indicativo presente|Indicativo pretérito perfecto compuesto|Indicativo pretérito perfecto simple)</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*");
 
-            //////MatchCollection matches = rxVerbs.Matches(text);
-            //////if (matches.Count == 0)
-            //////{
-            //////    return string.Empty;
-            //////}
+        //    //////MatchCollection matches = rxVerbs.Matches(text);
+        //    //////if (matches.Count == 0)
+        //    //////{
+        //    //////    return string.Empty;
+        //    //////}
 
-            //////string[,] verbGrid = new string[matches.Count + 1, 6];
-            //////verbGrid[0, 0] = "Yo";
-            //////verbGrid[0, 1] = "Tu";
-            //////verbGrid[0, 2] = "El/Ella/Ud";
-            //////verbGrid[0, 3] = "Nosotros/as";
-            //////verbGrid[0, 4] = "Vosotros/as";
-            //////verbGrid[0, 5] = "Ellos/Ellas/Uds";
+        //    //////string[,] verbGrid = new string[matches.Count + 1, 6];
+        //    //////verbGrid[0, 0] = "Yo";
+        //    //////verbGrid[0, 1] = "Tu";
+        //    //////verbGrid[0, 2] = "El/Ella/Ud";
+        //    //////verbGrid[0, 3] = "Nosotros/as";
+        //    //////verbGrid[0, 4] = "Vosotros/as";
+        //    //////verbGrid[0, 5] = "Ellos/Ellas/Uds";
 
-            //////for (int i = 0; i < matches.Count; i++)
-            //////{
-            //////    for (int j = 0; j < matches[0].Groups[4].Captures.Count; j++)
-            //////    {
-            //////        verbGrid[i + 1, j] = matches[i].Groups[4].Captures[j].Value;
-            //////    }
-            //////}
+        //    //////for (int i = 0; i < matches.Count; i++)
+        //    //////{
+        //    //////    for (int j = 0; j < matches[0].Groups[4].Captures.Count; j++)
+        //    //////    {
+        //    //////        verbGrid[i + 1, j] = matches[i].Groups[4].Captures[j].Value;
+        //    //////    }
+        //    //////}
 
-            //////Regex rxGerunds = new Regex(@"<h5 [^>]*>(Gerundio)</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*");
-            //////MatchCollection matchesGerund = rxGerunds.Matches(textBox1.Text);
+        //    //////Regex rxGerunds = new Regex(@"<h5 [^>]*>(Gerundio)</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*");
+        //    //////MatchCollection matchesGerund = rxGerunds.Matches(textBox1.Text);
 
-            //////return TableFromArray(matches.Count, matchesGerund[0].Groups[4].Value, verbGrid);
+        //    //////return TableFromArray(matches.Count, matchesGerund[0].Groups[4].Value, verbGrid);
 
-            return TableFromVerb(new BabLaProvider().GetConjugation(textBox1.Text));
-        }
+        //    return TableFromVerb(new BabLaProvider().GetConjugation(textBox1.Text));
+        //}
 
-        private string TableFrom123Spanish()
-        {
-            ////////Regex rx = new Regex(@"<tr>\s*<td [^>]*><a[^>]*>([\w\s-]+)(</a>)*\s*</td>\s*(<td[^>]*>([^<]+)</td>\s*)+</tr>");
-            //////Regex rxVerbsNew = new Regex(@"(<td\s+class=""conjugation[^""]*[^>]*>(\w+)[^<]*</td>\s+)+");
-            //////Regex rxVerbs = new Regex(@"<tr>\s*<td [^>]*><a[^>]*title=" + "\"" + @"(Present Tense Indicative|Present perfect Indicative|Preterite)[^>]*>(Present|Present Perfect|Imperfect|Preterite)(</a>)*\s*</td>\s*(<td[^>]*>([^<]+)</td>\s*)+</tr>");
-            ////////Regex rxGerunds = new Regex(@"Present Participle.*\s*<td.*conjugation[^>]*>(.*)</td>");
-            //////Regex rxGerunds = new Regex(@"Present Participle.*\s*(<td.*conjugation english[^>]*>.*</td>)*\s*(<td.*conjugation[^>]*>(.*)</td>)");
+        //private string TableFrom123Spanish()
+        //{
+        //    ////////Regex rx = new Regex(@"<tr>\s*<td [^>]*><a[^>]*>([\w\s-]+)(</a>)*\s*</td>\s*(<td[^>]*>([^<]+)</td>\s*)+</tr>");
+        //    //////Regex rxVerbsNew = new Regex(@"(<td\s+class=""conjugation[^""]*[^>]*>(\w+)[^<]*</td>\s+)+");
+        //    //////Regex rxVerbs = new Regex(@"<tr>\s*<td [^>]*><a[^>]*title=" + "\"" + @"(Present Tense Indicative|Present perfect Indicative|Preterite)[^>]*>(Present|Present Perfect|Imperfect|Preterite)(</a>)*\s*</td>\s*(<td[^>]*>([^<]+)</td>\s*)+</tr>");
+        //    ////////Regex rxGerunds = new Regex(@"Present Participle.*\s*<td.*conjugation[^>]*>(.*)</td>");
+        //    //////Regex rxGerunds = new Regex(@"Present Participle.*\s*(<td.*conjugation english[^>]*>.*</td>)*\s*(<td.*conjugation[^>]*>(.*)</td>)");
 
-            //////MatchCollection matches = rxVerbs.Matches(textBox1.Text);
-            //////MatchCollection matchesGerund = rxGerunds.Matches(textBox1.Text);
-            //////List<string> transponedMatches = new List<string>();
-            ////////transponedMatches.AddRange(new string[matches.Count]);
-            //////if (matches.Count == 0)
-            //////{
-            //////    return string.Empty;
-            //////}
+        //    //////MatchCollection matches = rxVerbs.Matches(textBox1.Text);
+        //    //////MatchCollection matchesGerund = rxGerunds.Matches(textBox1.Text);
+        //    //////List<string> transponedMatches = new List<string>();
+        //    ////////transponedMatches.AddRange(new string[matches.Count]);
+        //    //////if (matches.Count == 0)
+        //    //////{
+        //    //////    return string.Empty;
+        //    //////}
 
-            //////string[,] verbGrid = new string[matches.Count + 1, 6];
-            //////verbGrid[0, 0] = "Yo";
-            //////verbGrid[0, 1] = "Tu";
-            //////verbGrid[0, 2] = "El/Ella/Ud";
-            //////verbGrid[0, 3] = "Nosotros/as";
-            //////verbGrid[0, 4] = "Vosotros/as";
-            //////verbGrid[0, 5] = "Ellos/Ellas/Uds";
-            //////for (int i = 0; i < matches.Count; i++)
-            //////{
-            //////    Regex rxRow = new Regex(@"<td[^>]*>([^<]+)</td>\s*");
-            //////    var rowsMatches = rxRow.Matches(matches[i].Groups[0].Value);
-            //////    Match[] matchesArray = new Match[rowsMatches.Count];
-            //////    rowsMatches.CopyTo(matchesArray, 0);
-            //////    List<Match> filteredRows = matchesArray.Where(m => !m.Value.Contains("english")).ToList();
+        //    //////string[,] verbGrid = new string[matches.Count + 1, 6];
+        //    //////verbGrid[0, 0] = "Yo";
+        //    //////verbGrid[0, 1] = "Tu";
+        //    //////verbGrid[0, 2] = "El/Ella/Ud";
+        //    //////verbGrid[0, 3] = "Nosotros/as";
+        //    //////verbGrid[0, 4] = "Vosotros/as";
+        //    //////verbGrid[0, 5] = "Ellos/Ellas/Uds";
+        //    //////for (int i = 0; i < matches.Count; i++)
+        //    //////{
+        //    //////    Regex rxRow = new Regex(@"<td[^>]*>([^<]+)</td>\s*");
+        //    //////    var rowsMatches = rxRow.Matches(matches[i].Groups[0].Value);
+        //    //////    Match[] matchesArray = new Match[rowsMatches.Count];
+        //    //////    rowsMatches.CopyTo(matchesArray, 0);
+        //    //////    List<Match> filteredRows = matchesArray.Where(m => !m.Value.Contains("english")).ToList();
 
-            //////    for (int j = 0; j < filteredRows.Count; j++)
-            //////    {
-            //////        verbGrid[i + 1, j] = filteredRows[j].Groups[1].Value;
-            //////    }
-            //////}
+        //    //////    for (int j = 0; j < filteredRows.Count; j++)
+        //    //////    {
+        //    //////        verbGrid[i + 1, j] = filteredRows[j].Groups[1].Value;
+        //    //////    }
+        //    //////}
 
-            //////return TableFromArray(matches.Count, matchesGerund[0].Groups[matchesGerund[0].Groups.Count - 1].Value, verbGrid);
-            try
-            {
-                return TableFromVerb(new TeachMeProvider().GetConjugation(textBox1.Text));
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
+        //    //////return TableFromArray(matches.Count, matchesGerund[0].Groups[matchesGerund[0].Groups.Count - 1].Value, verbGrid);
+        //    try
+        //    {
+        //        return TableFromVerb(new TeachMeProvider().GetConjugation(textBox1.Text));
+        //    }
+        //    catch
+        //    {
+        //        return string.Empty;
+        //    }
+        //}
 
         private static string TableFromArray(int numberOfTenses, string gerund, string[,] verbGrid)
         {
@@ -210,64 +215,74 @@ namespace SpanishVerbs
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-            textBox1.Text = CallWebSite("http://www.123teachme.com/spanish_verb_conjugation/{0}");
-            if (string.IsNullOrEmpty(textBox1.Text))
-                return;
+            //textBox1.Text = CallWebSite("http://www.123teachme.com/spanish_verb_conjugation/{0}");
+            //if (string.IsNullOrEmpty(textBox1.Text))
+            //    return;
 
-            try
+            foreach (ProviderBase provider in _providers)
             {
-                textBox2.Text = TableFrom123Spanish();
-                if (string.IsNullOrEmpty(textBox2.Text) || checkBox1.Checked)
+                string verbTable = string.Empty;
+                try
                 {
+                    verbTable = TableFromVerb(provider.GetConjugation(textBox3.Text));
+                }
+                catch (Exception)
+                {
+                } 
 
-                    textBox1.Text = CallWebSite("http://en.bab.la/conjugation/spanish/{0}");
-
-                    if (string.IsNullOrEmpty(textBox1.Text))
-                        return;
-
-                    textBox2.Text = TableFromBabLa(textBox1.Text);
+                if (!string.IsNullOrEmpty(verbTable))
+                {
+                    textBox2.Text = verbTable;
                 }
             }
-            catch
-            { }
-            try
-            {
-                textBox1.Text = CallWebSite("http://www.spanishdict.com/conjugate/{0}");
-                if (string.IsNullOrEmpty(textBox1.Text))
-                    return;
-                textBox2.Text = TableFromSpanishDict(textBox1.Text);
 
-            }
-            catch
-            {
 
-                throw;
-            }
+            //try
+            //{
+            //    textBox2.Text = TableFrom123Spanish();
+            //    if (string.IsNullOrEmpty(textBox2.Text) || checkBox1.Checked)
+            //    {
+
+            //        textBox1.Text = CallWebSite("http://en.bab.la/conjugation/spanish/{0}");
+
+            //        if (string.IsNullOrEmpty(textBox1.Text))
+            //            return;
+
+            //        textBox2.Text = TableFromBabLa(textBox1.Text);
+            //    }
+            //}
+            //catch
+            //{ }
+            //if (string.IsNullOrEmpty(textBox2.Text))
+            //{
+            //    try
+            //    {
+            //        textBox1.Text = CallWebSite("http://www.spanishdict.com/conjugate/{0}");
+            //        if (string.IsNullOrEmpty(textBox1.Text))
+            //            return;
+            //        textBox2.Text = TableFromSpanishDict(textBox1.Text);
+
+            //    }
+            //    catch
+            //    {
+
+            //        throw;
+            //    }
+            //}
         }
 
-        private string TableFromSpanishDict(string p)
-        {
-            try
-            {
-                return TableFromVerb(new SpanishDictProvider().GetConjugation(textBox1.Text));
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
+        //private string TableFromSpanishDict(string p)
+        //{
+        //    try
+        //    {
+        //        return TableFromVerb(new SpanishDictProvider().GetConjugation(textBox1.Text));
+        //    }
+        //    catch
+        //    {
+        //        return string.Empty;
+        //    }
+        //}
 
-        private string CallWebSite(string url)
-        {
-            HttpWebRequest HttpWReq =
-            (HttpWebRequest)WebRequest.Create(string.Format(url, textBox3.Text));
 
-            HttpWebResponse HttpWResp = (HttpWebResponse)HttpWReq.GetResponse();
-            StreamReader sr = new StreamReader(HttpWResp.GetResponseStream());
-            string result = sr.ReadToEnd();
-            // Insert code that uses the response object.
-            HttpWResp.Close();
-            return result;
-        }
     }
 }

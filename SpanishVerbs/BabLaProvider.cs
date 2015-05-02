@@ -9,6 +9,11 @@ namespace SpanishVerbs
 {
     public class BabLaProvider:ProviderBase, IConjugationProvider
     {
+        public BabLaProvider(string providerUrl)
+            : base(providerUrl)
+        {
+
+        }
         //public Verb GetConjugation(string rawData)
         //{
         //    Verb verb = new Verb();

@@ -9,6 +9,12 @@ namespace SpanishVerbs
 {
     public class SpanishDictProvider : ProviderBase, IConjugationProvider
     {
+        public SpanishDictProvider(string providerUrl)
+            : base(providerUrl)
+        {
+
+        }
+
         public override string GetGerund(string rawData)
         {
             throw new NotImplementedException();

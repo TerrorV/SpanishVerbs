@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace SpanishVerbs.Test
 {
@@ -58,23 +59,24 @@ namespace SpanishVerbs.Test
 		        	</tr>
     	</div>
     </div>";
-            Verb verb = new TeachMeProvider().GetConjugation(page);
+            Dictionary<Person, string> tense = new TeachMeProvider("").GetConjugationPerTense(page,Tense.Present);
 
-            Assert.AreEqual(6, verb.Present.Count);
-            Assert.AreEqual(6, verb.Imperfect.Count);
-            Assert.AreEqual("como", verb.Present[Person.FirstSingle]);
-            Assert.AreEqual("comes", verb.Present[Person.SecondSingle]);
-            Assert.AreEqual("come", verb.Present[Person.ThirdSingle]);
-            Assert.AreEqual("comemos", verb.Present[Person.FirstPlural]);
-            Assert.AreEqual("coméis", verb.Present[Person.SecondPlural]);
-            Assert.AreEqual("comen", verb.Present[Person.ThirdPlural]);
+            Assert.AreEqual(6, tense.Count);
+            Assert.AreEqual("como", tense[Person.FirstSingle]);
+            Assert.AreEqual("comes", tense[Person.SecondSingle]);
+            Assert.AreEqual("come", tense[Person.ThirdSingle]);
+            Assert.AreEqual("comemos", tense[Person.FirstPlural]);
+            Assert.AreEqual("coméis", tense[Person.SecondPlural]);
+            Assert.AreEqual("comen", tense[Person.ThirdPlural]);
 
-            Assert.AreEqual("comiera<div class=\"or_block\">OR</div>comiese", verb.Imperfect[Person.FirstSingle]);
-            Assert.AreEqual("comieras<div class=\"or_block\">OR</div>comieses", verb.Imperfect[Person.SecondSingle]);
-            Assert.AreEqual("comiera<div class=\"or_block\">OR</div>comiese", verb.Imperfect[Person.ThirdSingle]);
-            Assert.AreEqual("comiéramos<div class=\"or_block\">OR</div>comi&eacute;semos", verb.Imperfect[Person.FirstPlural]);
-            Assert.AreEqual("comierais<div class=\"or_block\">OR</div>comieseis", verb.Imperfect[Person.SecondPlural]);
-            Assert.AreEqual("comieran<div class=\"or_block\">OR</div>comiesen", verb.Imperfect[Person.ThirdPlural]);
+            tense = new TeachMeProvider("").GetConjugationPerTense(page, Tense.Imperfect);
+            Assert.AreEqual(6, tense.Count);
+            Assert.AreEqual("comiera<div class=\"or_block\">OR</div>comiese", tense[Person.FirstSingle]);
+            Assert.AreEqual("comieras<div class=\"or_block\">OR</div>comieses", tense[Person.SecondSingle]);
+            Assert.AreEqual("comiera<div class=\"or_block\">OR</div>comiese", tense[Person.ThirdSingle]);
+            Assert.AreEqual("comiéramos<div class=\"or_block\">OR</div>comi&eacute;semos", tense[Person.FirstPlural]);
+            Assert.AreEqual("comierais<div class=\"or_block\">OR</div>comieseis", tense[Person.SecondPlural]);
+            Assert.AreEqual("comieran<div class=\"or_block\">OR</div>comiesen", tense[Person.ThirdPlural]);
         }
 
         [TestMethod]
@@ -118,9 +120,9 @@ namespace SpanishVerbs.Test
 </div>
 ";
 
-            Verb verb = new TeachMeProvider().GetConjugation(page);
+            string gerund = new TeachMeProvider("").GetGerund(page);
 
-            Assert.AreEqual("comiendo", verb.PresentParticiple);
+            Assert.AreEqual("comiendo", gerund);
         }
 
     }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -9,8 +11,15 @@ namespace SpanishVerbs
 {
     public abstract class ProviderBase
     {
-        public Verb GetConjugation(string rawData)
+        string _providerUrl = string.Empty;
+        public ProviderBase(string providerUrl)
         {
+            _providerUrl = providerUrl;
+        }
+
+        public Verb GetConjugation(string verbString)
+        {
+            string rawData = CallWebSite(verbString);
             Verb verb = new Verb();
             verb.Present = GetConjugationPerTense(rawData, Tense.Present);
             verb.PresentPerfect = GetConjugationPerTense(rawData, Tense.PresentPerfect);
@@ -32,11 +41,22 @@ namespace SpanishVerbs
 
             return verb;
         }
-        private Dictionary<Person, string> GetConjugationPerTense(string rawData, Tense tense)
+        public Dictionary<Person, string> GetConjugationPerTense(string rawData, Tense tense)
         {
             return ExtractConjugationFromMatches(FindMatchesPerTense(rawData, GetKeyword(tense)));
         }
+        public string CallWebSite(string verb)
+        {
+            HttpWebRequest HttpWReq =
+            (HttpWebRequest)WebRequest.Create(string.Format(_providerUrl, verb));
 
+            HttpWebResponse HttpWResp = (HttpWebResponse)HttpWReq.GetResponse();
+            StreamReader sr = new StreamReader(HttpWResp.GetResponseStream());
+            string result = sr.ReadToEnd();
+            // Insert code that uses the response object.
+            HttpWResp.Close();
+            return result;
+        }
         public abstract bool ValidateVerb(Verb verb);
         public abstract string GetGerund(string rawData);
         public abstract string GetKeyword(Tense tense);
