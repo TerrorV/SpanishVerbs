@@ -219,23 +219,6 @@ namespace SpanishVerbs
             //if (string.IsNullOrEmpty(textBox1.Text))
             //    return;
 
-            foreach (ProviderBase provider in _providers)
-            {
-                string verbTable = string.Empty;
-                try
-                {
-                    verbTable = TableFromVerb(provider.GetConjugation(textBox3.Text));
-                }
-                catch (Exception)
-                {
-                } 
-
-                if (!string.IsNullOrEmpty(verbTable))
-                {
-                    textBox2.Text = verbTable;
-                }
-            }
-
 
             //try
             //{
@@ -269,6 +252,31 @@ namespace SpanishVerbs
             //        throw;
             //    }
             //}
+        }
+
+        private void textBox3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                foreach (ProviderBase provider in _providers)
+                {
+                    string verbTable = string.Empty;
+                    try
+                    {
+                        verbTable = TableFromVerb(provider.GetConjugation(textBox3.Text));
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                    if (!string.IsNullOrEmpty(verbTable))
+                    {
+                        textBox2.Text = verbTable;
+                    }
+                }
+
+
+            }
         }
 
         //private string TableFromSpanishDict(string p)
