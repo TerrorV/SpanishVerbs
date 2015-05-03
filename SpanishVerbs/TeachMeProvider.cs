@@ -63,7 +63,7 @@ namespace SpanishVerbs
             if (!match.Success)
                 return string.Empty;
 
-            return rxRow.Matches( match.Value)[0].Groups[1].Value;
+            return rxRow.Matches( match.Value)[1].Groups[1].Value;
         }
 
         //private Dictionary<Person, string> GetConjugationPerTense(string rawData, Tense tense)
