@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace SpanishVerbs
 {
@@ -72,6 +73,12 @@ namespace SpanishVerbs
 
         public override MatchCollection FindMatchesPerTense(string page, string tenseKeyword)
         {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(page);
+            XmlNode gerund = doc.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[3]");
+            XmlNode preterite = doc.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[4]");
+            XmlNode conjugationTable = doc.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[6]/table");
+            XmlNodeList words = doc.SelectNodes(@"//td[contains(@class,'vtable-word')]");
             Regex rxTense = new Regex(string.Format(@"class=""tense_heading"">\s*<a[^>]*title=""[\s\w-]+""[^>]*>({0}).*\s*</td>\s*(<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+)+</tr>", tenseKeyword));
             Regex rxRow = new Regex(@"<td\s+class=""conjugation (irregular)*""[^>]*>([\w\s&;]+|[\w\s&;]+<div[^>]*>OR</div>[\w\s&;]+)[^<]*</td>\s+");
 
