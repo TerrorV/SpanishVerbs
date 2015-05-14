@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,11 @@ namespace SpanishVerbs
 
         public override string GetGerund(string rawData)
         {
-            throw new NotImplementedException();
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(rawData);
+            XmlNode gerund = doc.SelectNodes(@"//div[contains(@class,'conj-row')]/span").Item(0);
+
+            return gerund.InnerXml;
         }
 
         public override bool ValidateVerb(Verb verb)
@@ -73,18 +78,37 @@ namespace SpanishVerbs
 
         public override MatchCollection FindMatchesPerTense(string page, string tenseKeyword)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(page);
-            XmlNode gerund = doc.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[3]");
-            XmlNode preterite = doc.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[4]");
-            XmlNode conjugationTable = doc.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[6]/table");
-            XmlNodeList words = doc.SelectNodes(@"//td[contains(@class,'vtable-word')]");
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(page);
+
+            if (doc.ParseErrors != null && doc.ParseErrors.Count() > 0)
+            {
+                // Handle any parse errors as required
+
+            }
+
+            if (doc.DocumentNode != null)
+            {
+                HtmlNode preteriteNode = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[4]");
+                string preterite = preteriteNode.SelectSingleNode("//span").InnerText;
+                HtmlNode conjugationTable = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[6]/table");
+                HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//td[contains(@class,'vtable-word')]");
+            }
             Regex rxTense = new Regex(string.Format(@"class=""tense_heading"">\s*<a[^>]*title=""[\s\w-]+""[^>]*>({0}).*\s*</td>\s*(<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+)+</tr>", tenseKeyword));
             Regex rxRow = new Regex(@"<td\s+class=""conjugation (irregular)*""[^>]*>([\w\s&;]+|[\w\s&;]+<div[^>]*>OR</div>[\w\s&;]+)[^<]*</td>\s+");
 
             Match tenseMatch = rxTense.Match(page);
 
             return rxRow.Matches(tenseMatch.Value);
+        }
+
+        private string GetParticiple(string rawData)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(rawData);
+            XmlNode gerund = doc.SelectNodes(@"//div[contains(@class,'conj-row')]/span").Item(1);
+
+            return gerund.InnerXml;
         }
 
     }

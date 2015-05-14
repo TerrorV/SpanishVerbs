@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BabLaProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpanishDictTestResource.cs" />
     <Compile Include="TeachMeProviderTest.cs" />
     <Compile Include="SpanishDictProviderTest.cs" />
   </ItemGroup>
