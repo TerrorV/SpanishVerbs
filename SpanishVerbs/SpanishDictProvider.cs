@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace SpanishVerbs
 {
-    public class SpanishDictProvider : ProviderBase, IConjugationProvider
+    public class SpanishDictProvider : ProviderBase<string>, IConjugationProvider
     {
         public SpanishDictProvider(string providerUrl)
             : base(providerUrl)
@@ -47,36 +47,46 @@ namespace SpanishVerbs
         {
             switch (tense)
             {
+                case Tense.Present:
+                    return "Indicative Present";
                 case Tense.PresentPerfect:
-                    return "Present Perfect";
+                    return "Perfect Present";
+                case Tense.Imperfect:
+                    return "Indicative Imperfect";
+                case Tense.Preterite:
+                    return "Indicative Preterite";
                 case Tense.PastPerfect:
-                    return "Past Perfect";
+                    return "Perfect Past";
+                case Tense.Future:
+                    return "Indicative Future";
                 case Tense.FuturePerfect:
-                    return "Future Perfect";
+                    return "Perfect Future";
+                case Tense.Conditional:
+                    return "Indicative Conditional";
                 case Tense.ConditionalPerfect:
-                    return "Conditional Perfect";
+                    return "Perfect Conditional";
                 case Tense.PreteritePerfect:
-                    return "Preterite Perfect";
+                    return "Perfect Preterite";
                 default:
                     return tense.ToString();
             }
         }
 
-        public override Dictionary<Person, string> ExtractConjugationFromMatches(MatchCollection matchCollection)
+        public override Dictionary<Person, string> ExtractConjugationFromMatches(IEnumerable<string> matchCollection)
         {
             Dictionary<Person, string> conjugation = new Dictionary<Person, string>();
-            if (matchCollection.Count < 6)
+            if (matchCollection.Count() < 6)
                 return conjugation;
 
             for (int i = 0; i < 6; i++)
             {
-                conjugation.Add((Person)i, matchCollection[i].Groups[2].Value.Trim());
+                conjugation.Add((Person)i, matchCollection.ElementAt(i).Trim());
             }
 
             return conjugation;
         }
 
-        public override MatchCollection FindMatchesPerTense(string page, string tenseKeyword)
+        public override IEnumerable<string> FindMatchesPerTense(string page, string tenseKeyword)
         {
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(page);
@@ -84,22 +94,75 @@ namespace SpanishVerbs
             if (doc.ParseErrors != null && doc.ParseErrors.Count() > 0)
             {
                 // Handle any parse errors as required
-
             }
-
+            List<string> tenseMatches = new List<string>();
             if (doc.DocumentNode != null)
             {
-                HtmlNode preteriteNode = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[4]");
-                string preterite = preteriteNode.SelectSingleNode("//span").InnerText;
-                HtmlNode conjugationTable = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[6]/table");
+                //HtmlNode preteriteNode = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[4]");
+                //string preterite = preteriteNode.SelectSingleNode("//span").InnerText;
+                //HtmlNode conjugationTable = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[6]/table");
                 HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//td[contains(@class,'vtable-word')]");
+                int tenseIndex = GetTenseIndex(tenseKeyword);
+
+                for (int i = 0; i < 6; i++)
+                {
+                    tenseMatches.Add(words.ElementAt(i * 5 + tenseIndex).InnerText);
+                }
             }
-            Regex rxTense = new Regex(string.Format(@"class=""tense_heading"">\s*<a[^>]*title=""[\s\w-]+""[^>]*>({0}).*\s*</td>\s*(<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+)+</tr>", tenseKeyword));
-            Regex rxRow = new Regex(@"<td\s+class=""conjugation (irregular)*""[^>]*>([\w\s&;]+|[\w\s&;]+<div[^>]*>OR</div>[\w\s&;]+)[^<]*</td>\s+");
 
-            Match tenseMatch = rxTense.Match(page);
+            return tenseMatches;
+        }
 
-            return rxRow.Matches(tenseMatch.Value);
+        private int GetTenseIndex(string tenseKeyword)
+        {
+            string[] testType = tenseKeyword.Split(' ');
+            int mainTypeIndex = 0;
+            switch (testType[0])
+            {
+                case "Indicative":
+                    mainTypeIndex = 0;
+                    break;
+                case "Subjunctive":
+                    mainTypeIndex = 30;
+                    break;
+                case "Imperative":
+                    mainTypeIndex = 60;
+                    break;
+                case "Perfect":
+                    mainTypeIndex = 66;
+                    break;
+                case "PerfectSubjunctive":
+                    mainTypeIndex = 66;
+                    break;
+                default:
+                    mainTypeIndex = 0;
+                    break;
+            }
+
+            int tenseTypeIndex = 0;
+            switch(testType[1])
+            {
+                case "Present":
+                    tenseTypeIndex =0;
+                    break;
+                  case "Preterite":
+                    tenseTypeIndex =1;
+                    break;
+                case "Imperfect":
+                    tenseTypeIndex =2;
+                    break;
+                case "Conditional":
+                    tenseTypeIndex =3;
+                    break;
+                case "Future":
+                    tenseTypeIndex =4;
+                    break;
+              default:
+                    tenseTypeIndex =0;
+                    break;
+            }
+
+            return mainTypeIndex + tenseTypeIndex;
         }
 
         private string GetParticiple(string rawData)

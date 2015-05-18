@@ -15,13 +15,13 @@ namespace SpanishVerbs
 {
     public partial class Form1 : Form
     {
-                    List<ProviderBase> _providers = new List<ProviderBase>();
+        List<IProviderBase> _providers = new List<IProviderBase>();
 
         public Form1()
         {
             InitializeComponent();
-            _providers.Add(new TeachMeProvider("http://www.123teachme.com/spanish_verb_conjugation/{0}"));
-            _providers.Add(new BabLaProvider("http://en.bab.la/conjugation/spanish/{0}"));
+            //_providers.Add(new TeachMeProvider("http://www.123teachme.com/spanish_verb_conjugation/{0}"));
+            //_providers.Add(new BabLaProvider("http://en.bab.la/conjugation/spanish/{0}"));
             _providers.Add(new SpanishDictProvider("http://www.spanishdict.com/conjugate/{0}"));
         }
 
@@ -258,7 +258,7 @@ namespace SpanishVerbs
         {
             if(e.KeyCode == Keys.Enter)
             {
-                foreach (ProviderBase provider in _providers)
+                foreach (IProviderBase provider in _providers)
                 {
                     string verbTable = string.Empty;
                     try

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SpanishVerbs
 {
-    public class BabLaProvider:ProviderBase, IConjugationProvider
+    public class BabLaProvider:ProviderBase<Match>, IConjugationProvider
     {
         public BabLaProvider(string providerUrl)
             : base(providerUrl)
@@ -126,21 +127,21 @@ namespace SpanishVerbs
             return tense.ToString();
         }
 
-        public override Dictionary<Person, string> ExtractConjugationFromMatches(MatchCollection matchCollection)
+        public override Dictionary<Person, string> ExtractConjugationFromMatches(IEnumerable<Match> matchCollection)
         {
             Dictionary<Person, string> conjugation = new Dictionary<Person, string>();
-            if (matchCollection.Count < 6)
+            if (matchCollection.Count() < 6)
                 return conjugation;
 
             for (int i = 0; i < 6; i++)
             {
-                conjugation.Add((Person)i, matchCollection[i].Groups[2].Value);
+                conjugation.Add((Person)i, matchCollection.ElementAt(i).Groups[2].Value);
             }
 
             return conjugation;
         }
 
-        public override MatchCollection FindMatchesPerTense(string page, string tenseKeyword)
+        public override IEnumerable<Match> FindMatchesPerTense(string page, string tenseKeyword)
         {
             Regex rxTense = new Regex(string.Format(@"<h5 [^>]*>({0})</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*", tenseKeyword));
 
@@ -148,7 +149,7 @@ namespace SpanishVerbs
 
             Match tenseMatch = rxTense.Match(page);
 
-            return rxRow.Matches(tenseMatch.Value);
+            return rxRow.Matches(tenseMatch.Value).Cast<Match>();
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SpanishVerbs
 {
-    public abstract class ProviderBase
+    public abstract class ProviderBase<T> : SpanishVerbs.IProviderBase
     {
         string _providerUrl = string.Empty;
         public ProviderBase(string providerUrl)
@@ -33,7 +34,6 @@ namespace SpanishVerbs
             verb.PreteritePerfect = GetConjugationPerTense(rawData, Tense.PreteritePerfect);
             verb.PresentParticiple = GetGerund(rawData);
 
-
             if (!ValidateVerb(verb))
             {
                 throw new Exception();
@@ -41,10 +41,12 @@ namespace SpanishVerbs
 
             return verb;
         }
+
         public Dictionary<Person, string> GetConjugationPerTense(string rawData, Tense tense)
         {
             return ExtractConjugationFromMatches(FindMatchesPerTense(rawData, GetKeyword(tense)));
         }
+
         public string CallWebSite(string verb)
         {
             HttpWebRequest HttpWReq =
@@ -57,10 +59,11 @@ namespace SpanishVerbs
             HttpWResp.Close();
             return result;
         }
+
         public abstract bool ValidateVerb(Verb verb);
         public abstract string GetGerund(string rawData);
         public abstract string GetKeyword(Tense tense);
-        public abstract MatchCollection FindMatchesPerTense(string page, string tenseKeyword);
-        public abstract Dictionary<Person, string> ExtractConjugationFromMatches(MatchCollection matchCollection);
+        public abstract IEnumerable<T> FindMatchesPerTense(string page, string tenseKeyword);
+        public abstract Dictionary<Person, string> ExtractConjugationFromMatches(IEnumerable<T> collection);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SpanishVerbs
 {
-    public class TeachMeProvider :ProviderBase, IConjugationProvider
+    public class TeachMeProvider :ProviderBase<Match>, IConjugationProvider
     {
         public TeachMeProvider(string providerUrl):base(providerUrl)
         {
@@ -117,28 +118,29 @@ namespace SpanishVerbs
             }
         }
 
-        public override Dictionary<Person, string> ExtractConjugationFromMatches(MatchCollection matchCollection)
+        public override Dictionary<Person, string> ExtractConjugationFromMatches(IEnumerable<Match> collection)
         {
+//            MatchCollection matchCollection = (MatchCollection)collection;
             Dictionary<Person, string> conjugation = new Dictionary<Person, string>();
-            if (matchCollection.Count < 6)
+            if (collection.Count() < 6)
                 return conjugation;
 
             for (int i = 0; i < 6; i++)
             {
-                conjugation.Add((Person)i, matchCollection[i].Groups[2].Value.Trim());
+                conjugation.Add((Person)i, collection.ElementAt(i).Groups[2].Value.Trim());
             }
 
             return conjugation;
         }
 
-        public override MatchCollection FindMatchesPerTense(string page, string tenseKeyword)
+        public override IEnumerable<Match> FindMatchesPerTense(string page, string tenseKeyword)
         {
             Regex rxTense = new Regex(string.Format(@"class=""tense_heading"">\s*<a[^>]*title=""[\s\w-]+""[^>]*>({0}).*\s*</td>\s*(<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+)+</tr>",tenseKeyword));
             Regex rxRow = new Regex(@"<td\s+class=""conjugation (irregular)*""[^>]*>([\w\s&;]+|[\w\s&;]+<div[^>]*>OR</div>[\w\s&;]+)[^<]*</td>\s+");
 
             Match tenseMatch = rxTense.Match(page);
 
-            return rxRow.Matches(tenseMatch.Value);
+            return rxRow.Matches(tenseMatch.Value).Cast<Match>();
         }
     }
 }

@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="BabLaProvider.cs" />
     <Compile Include="IConjugationProvider.cs" />
+    <Compile Include="IProviderBase.cs" />
     <Compile Include="ProviderBase.cs" />
     <Compile Include="SpanishDictProvider.cs" />
     <Compile Include="TeachMeProvider.cs" />
