@@ -34,14 +34,9 @@ namespace SpanishVerbs.Test
         [TestMethod]
         public void LoadConjugation()
         {
-            string page =
-                @" 
-<span class=""babGy"">vosotros/vosotras</span> comed<br><span class=""babGy"">ellos/ellas</span> coman<br></p></div><div class=""span4 result-left""><p><h5 class=""h5-conj"">Gerundio</h5><span class=""babGy""></span> comiendo<br></p></div><div class=""span4 result-left""><p><h5 class=""h5-conj"">Participio</h5><span class=""babGy""></span> comido<br></p></div></div></div></div>
-";
+            string gerund = new SpanishDictProvider("").GetGerund(SpanishDictTestResource.Page);
 
-            string gerund = new BabLaProvider("").GetGerund(page);
-
-            Assert.AreEqual("comiendo", gerund);
+            Assert.AreEqual("&nbspteniendo", gerund);
         }
     }
 }

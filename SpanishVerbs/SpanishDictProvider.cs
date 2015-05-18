@@ -19,11 +19,11 @@ namespace SpanishVerbs
 
         public override string GetGerund(string rawData)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(rawData);
-            XmlNode gerund = doc.SelectNodes(@"//div[contains(@class,'conj-row')]/span").Item(0);
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(rawData);
+            HtmlNode gerund = doc.DocumentNode.SelectNodes(@"//div[contains(@class,'conj-row')]/span").ElementAt(0);
 
-            return gerund.InnerXml;
+            return gerund.InnerText;
         }
 
         public override bool ValidateVerb(Verb verb)
