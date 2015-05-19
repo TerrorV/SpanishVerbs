@@ -126,13 +126,13 @@ namespace SpanishVerbs
                     mainTypeIndex = 30;
                     break;
                 case "Imperative":
-                    mainTypeIndex = 60;
+                    mainTypeIndex = 54;
                     break;
                 case "Perfect":
-                    mainTypeIndex = 66;
+                    mainTypeIndex = 60;
                     break;
                 case "PerfectSubjunctive":
-                    mainTypeIndex = 66;
+                    mainTypeIndex = 90;
                     break;
                 default:
                     mainTypeIndex = 0;
