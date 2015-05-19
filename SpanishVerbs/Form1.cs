@@ -20,9 +20,11 @@ namespace SpanishVerbs
         public Form1()
         {
             InitializeComponent();
-            //_providers.Add(new TeachMeProvider("http://www.123teachme.com/spanish_verb_conjugation/{0}"));
-            //_providers.Add(new BabLaProvider("http://en.bab.la/conjugation/spanish/{0}"));
+            _providers.Add(new TeachMeProvider("http://www.123teachme.com/spanish_verb_conjugation/{0}"));
+            _providers.Add(new BabLaProvider("http://en.bab.la/conjugation/spanish/{0}"));
             _providers.Add(new SpanishDictProvider("http://www.spanishdict.com/conjugate/{0}"));
+            comboBox1.DataSource = _providers;
+            //comboBox1.Items.Insert(0, "");
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -194,24 +196,24 @@ namespace SpanishVerbs
             }
         }
 
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control && e.KeyCode == Keys.A)
-            {
-                textBox1.SelectAll();
-            }
+        //private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    if (e.Control && e.KeyCode == Keys.A)
+        //    {
+        //        textBox1.SelectAll();
+        //    }
 
-            if (e.Control && e.KeyCode == Keys.C)
-            {
-                textBox1.Copy();
-            }
-            if (e.Control && e.KeyCode == Keys.V)
-            {
-                //textBox1.Text = string.Empty;
-                //textBox1.Paste();
-                //return;
-            }
-        }
+        //    if (e.Control && e.KeyCode == Keys.C)
+        //    {
+        //        textBox1.Copy();
+        //    }
+        //    if (e.Control && e.KeyCode == Keys.V)
+        //    {
+        //        //textBox1.Text = string.Empty;
+        //        //textBox1.Paste();
+        //        //return;
+        //    }
+        //}
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
@@ -258,24 +260,37 @@ namespace SpanishVerbs
         {
             if(e.KeyCode == Keys.Enter)
             {
-                foreach (IProviderBase provider in _providers)
+                if (checkBox1.Checked)
                 {
-                    string verbTable = string.Empty;
+                    IProviderBase provider = _providers.Where(p => p == comboBox1.SelectedValue).FirstOrDefault();
                     try
                     {
-                        verbTable = TableFromVerb(provider.GetConjugation(textBox3.Text));
+                        textBox2.Text = TableFromVerb(provider.GetConjugation(textBox3.Text));
                     }
                     catch (Exception)
                     {
                     }
-
-                    if (!string.IsNullOrEmpty(verbTable))
+                }
+                else
+                {
+                    foreach (IProviderBase provider in _providers)
                     {
-                        textBox2.Text = verbTable;
+                        string verbTable = string.Empty;
+                        try
+                        {
+                            verbTable = TableFromVerb(provider.GetConjugation(textBox3.Text));
+                        }
+                        catch (Exception)
+                        {
+                        }
+
+                        if (!string.IsNullOrEmpty(verbTable))
+                        {
+                            textBox2.Text = verbTable;
+                            break;
+                        }
                     }
                 }
-
-
             }
         }
 
