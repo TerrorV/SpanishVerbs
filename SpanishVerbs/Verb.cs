@@ -26,7 +26,8 @@ namespace SpanishVerbs
         FuturePerfect=6,
         Conditional=7,
         ConditionalPerfect=8,
-        PreteritePerfect=9
+        PreteritePerfect=9,
+        Imperative =10
     }
     public class Verb
     {
@@ -42,7 +43,8 @@ namespace SpanishVerbs
             FuturePerfect = new Dictionary<Person,string>();
             Conditional = new Dictionary<Person,string>();
             ConditionalPerfect = new Dictionary<Person,string>();
-            PreteritePerfect = new Dictionary<Person,string>();
+            PreteritePerfect = new Dictionary<Person, string>();
+            Imperative = new Dictionary<Person, string>();
         }
         public string Infinitive { get; set; }
         public string PresentParticiple { get; set; }
@@ -56,7 +58,8 @@ namespace SpanishVerbs
         public Dictionary<Person,string> FuturePerfect { get; set; }
         public Dictionary<Person,string> Conditional { get; set; }
         public Dictionary<Person,string> ConditionalPerfect { get; set; }
-        public Dictionary<Person,string> PreteritePerfect { get; set; }
+        public Dictionary<Person, string> PreteritePerfect { get; set; }
+        public Dictionary<Person, string> Imperative { get; set; }
         //public Dictionary<Person,string> Present { get; set; }
         //public Dictionary<Person,string> Present { get; set; }
         //public Dictionary<Person,string> Present { get; set; }

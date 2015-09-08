@@ -29,6 +29,25 @@ namespace SpanishVerbs.Test
             Assert.AreEqual("teníamos", tense[Person.FirstPlural]);
             Assert.AreEqual("teníais", tense[Person.SecondPlural]);
             Assert.AreEqual("tenían", tense[Person.ThirdPlural]);
+
+
+        }
+
+        [TestMethod]
+        public void LoadImperative()
+        {
+            Dictionary<Person, string> tense = new SpanishDictProvider("").GetConjugationPerTense(SpanishDictTestResource.Page, Tense.Imperative);
+            Assert.AreEqual(6, tense.Count);
+            Assert.IsFalse(tense.ContainsKey(Person.FirstSingle));
+            Assert.AreEqual("ten", tense[Person.SecondSingle]);
+            Assert.AreEqual("tenga", tense[Person.ThirdSingle]);
+            Assert.AreEqual("tengamos", tense[Person.FirstPlural]);
+            Assert.AreEqual("tened", tense[Person.SecondPlural]);
+            Assert.AreEqual("tengan", tense[Person.ThirdPlural]);
+
+            string gerund = new SpanishDictProvider("").GetGerund(SpanishDictTestResource.Page);
+
+            Assert.AreEqual("&nbspteniendo", gerund);
         }
 
         [TestMethod]
