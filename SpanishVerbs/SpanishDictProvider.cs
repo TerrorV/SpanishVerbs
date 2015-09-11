@@ -174,5 +174,12 @@ namespace SpanishVerbs
             return gerund.InnerXml;
         }
 
+
+        public override Dictionary<Person, string> GetImperative(string rawData)
+        {
+            var result = GetConjugationPerTense(rawData, Tense.Imperative);
+
+            return result;
+        }
     }
 }

@@ -152,5 +152,10 @@ namespace SpanishVerbs
             return rxRow.Matches(tenseMatch.Value).Cast<Match>();
         }
 
+
+        public override Dictionary<Person, string> GetImperative(string rawData)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

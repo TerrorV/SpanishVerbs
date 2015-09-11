@@ -65,5 +65,6 @@ namespace SpanishVerbs
         public abstract string GetKeyword(Tense tense);
         public abstract IEnumerable<T> FindMatchesPerTense(string page, string tenseKeyword);
         public abstract Dictionary<Person, string> ExtractConjugationFromMatches(IEnumerable<T> collection);
+        public abstract Dictionary<Person, string> GetImperative(string rawData);
     }
 }

@@ -36,7 +36,7 @@ namespace SpanishVerbs.Test
         [TestMethod]
         public void LoadImperative()
         {
-            Dictionary<Person, string> tense = new SpanishDictProvider("").GetConjugationPerTense(SpanishDictTestResource.Page, Tense.Imperative);
+            Dictionary<Person, string> tense = new SpanishDictProvider("").GetImperative(SpanishDictTestResource.Page);
             Assert.AreEqual(6, tense.Count);
             Assert.IsFalse(tense.ContainsKey(Person.FirstSingle));
             Assert.AreEqual("ten", tense[Person.SecondSingle]);
