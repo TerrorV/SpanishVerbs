@@ -67,6 +67,8 @@ namespace SpanishVerbs
                     return "Perfect Conditional";
                 case Tense.PreteritePerfect:
                     return "Perfect Preterite";
+                case Tense.Imperative:
+                    return "Imperative Imperative";
                 default:
                     return tense.ToString();
             }
@@ -106,6 +108,7 @@ namespace SpanishVerbs
 
                 for (int i = 0; i < 6; i++)
                 {
+                    //TODO i * 5 needs to be configurable to account for the Imperative and few other things (or extract it in another method)
                     tenseMatches.Add(words.ElementAt(i * 5 + tenseIndex).InnerText);
                 }
             }
@@ -142,6 +145,7 @@ namespace SpanishVerbs
             int tenseTypeIndex = 0;
             switch(testType[1])
             {
+                case "Imperative":
                 case "Present":
                     tenseTypeIndex =0;
                     break;
