@@ -129,7 +129,7 @@ namespace SpanishVerbs
                     mainTypeIndex = 30;
                     break;
                 case "Imperative":
-                    mainTypeIndex = 54;
+                    mainTypeIndex = 49;
                     break;
                 case "Perfect":
                     mainTypeIndex = 60;
@@ -146,6 +146,8 @@ namespace SpanishVerbs
             switch(testType[1])
             {
                 case "Imperative":
+                                        tenseTypeIndex =5;
+                    break;
                 case "Present":
                     tenseTypeIndex =0;
                     break;
@@ -181,7 +183,32 @@ namespace SpanishVerbs
 
         public override Dictionary<Person, string> GetImperative(string rawData)
         {
-            var result = GetConjugationPerTense(rawData, Tense.Imperative);
+            string tenseKeyword;
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(rawData);
+
+            if (doc.ParseErrors != null && doc.ParseErrors.Count() > 0)
+            {
+                // Handle any parse errors as required
+            }
+            List<string> tenseMatches = new List<string>();
+            if (doc.DocumentNode != null)
+            {
+                //HtmlNode preteriteNode = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[4]");
+                //string preterite = preteriteNode.SelectSingleNode("//span").InnerText;
+                //HtmlNode conjugationTable = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[6]/table");
+                HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//td[contains(@class,'vtable-word')]");
+                int tenseIndex = GetTenseIndex(GetKeyword(Tense.Imperative));
+
+                for (int i = 0; i < 6; i++)
+                {
+                    //TODO i * 5 needs to be configurable to account for the Imperative and few other things (or extract it in another method)
+                    tenseMatches.Add(words.ElementAt(i + tenseIndex).InnerText);
+                }
+            }
+
+
+            var result = ExtractConjugationFromMatches(tenseMatches);
 
             return result;
         }
