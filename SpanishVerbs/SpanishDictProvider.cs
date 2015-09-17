@@ -82,7 +82,11 @@ namespace SpanishVerbs
 
             for (int i = 0; i < 6; i++)
             {
-                conjugation.Add((Person)i, matchCollection.ElementAt(i).Trim());
+                string currentConjugation = matchCollection.ElementAt(i).Trim();
+                if (Regex.IsMatch(currentConjugation, @"\w+"))
+                {
+                    conjugation.Add((Person)i, currentConjugation);
+                }
             }
 
             return conjugation;
@@ -143,28 +147,28 @@ namespace SpanishVerbs
             }
 
             int tenseTypeIndex = 0;
-            switch(testType[1])
+            switch (testType[1])
             {
                 case "Imperative":
-                                        tenseTypeIndex =5;
+                    tenseTypeIndex = 5;
                     break;
                 case "Present":
-                    tenseTypeIndex =0;
+                    tenseTypeIndex = 0;
                     break;
-                  case "Preterite":
-                    tenseTypeIndex =1;
+                case "Preterite":
+                    tenseTypeIndex = 1;
                     break;
                 case "Imperfect":
-                    tenseTypeIndex =2;
+                    tenseTypeIndex = 2;
                     break;
                 case "Conditional":
-                    tenseTypeIndex =3;
+                    tenseTypeIndex = 3;
                     break;
                 case "Future":
-                    tenseTypeIndex =4;
+                    tenseTypeIndex = 4;
                     break;
-              default:
-                    tenseTypeIndex =0;
+                default:
+                    tenseTypeIndex = 0;
                     break;
             }
 

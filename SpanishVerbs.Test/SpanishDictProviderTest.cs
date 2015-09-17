@@ -37,17 +37,14 @@ namespace SpanishVerbs.Test
         public void LoadImperative()
         {
             Dictionary<Person, string> tense = new SpanishDictProvider("").GetImperative(SpanishDictTestResource.Page);
-            Assert.AreEqual(6, tense.Count);
-            Assert.IsFalse(tense.ContainsKey(Person.FirstSingle));
+            Assert.AreEqual(5, tense.Count);
             Assert.AreEqual("ten", tense[Person.SecondSingle]);
             Assert.AreEqual("tenga", tense[Person.ThirdSingle]);
             Assert.AreEqual("tengamos", tense[Person.FirstPlural]);
             Assert.AreEqual("tened", tense[Person.SecondPlural]);
             Assert.AreEqual("tengan", tense[Person.ThirdPlural]);
-
-            string gerund = new SpanishDictProvider("").GetGerund(SpanishDictTestResource.Page);
-
-            Assert.AreEqual("&nbspteniendo", gerund);
+            Assert.IsFalse(tense.ContainsKey(Person.FirstSingle));
+            
         }
 
         [TestMethod]
