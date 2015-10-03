@@ -50,6 +50,7 @@ namespace SpanishVerbs.Test
         [TestMethod]
         public void LoadConjugation()
         {
+            //añadir
             string gerund = new SpanishDictProvider("").GetGerund(SpanishDictTestResource.Page);
 
             Assert.AreEqual("&nbspteniendo", gerund);

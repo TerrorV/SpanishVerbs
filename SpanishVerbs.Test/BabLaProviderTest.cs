@@ -62,18 +62,18 @@ namespace SpanishVerbs.Test
             Assert.AreEqual("comiendo", gerund);
         }
 
-        [TestMethod]
-        public void LoadImperative()
-        {
-            Dictionary<Person, string> tense = new TeachMeProvider("").GetImperative(BabLaTestResource.Page);
-            Assert.AreEqual(5, tense.Count);
-            Assert.AreEqual("ten", tense[Person.SecondSingle]);
-            Assert.AreEqual("tenga", tense[Person.ThirdSingle]);
-            Assert.AreEqual("tengamos", tense[Person.FirstPlural]);
-            Assert.AreEqual("tened", tense[Person.SecondPlural]);
-            Assert.AreEqual("tengan", tense[Person.ThirdPlural]);
-            Assert.IsFalse(tense.ContainsKey(Person.FirstSingle));
+        //[TestMethod]
+        //public void LoadImperative()
+        //{
+        //    Dictionary<Person, string> tense = new TeachMeProvider("").GetImperative(BabLaTestResource.Page);
+        //    Assert.AreEqual(5, tense.Count);
+        //    Assert.AreEqual("ten", tense[Person.SecondSingle]);
+        //    Assert.AreEqual("tenga", tense[Person.ThirdSingle]);
+        //    Assert.AreEqual("tengamos", tense[Person.FirstPlural]);
+        //    Assert.AreEqual("tened", tense[Person.SecondPlural]);
+        //    Assert.AreEqual("tengan", tense[Person.ThirdPlural]);
+        //    Assert.IsFalse(tense.ContainsKey(Person.FirstSingle));
 
-        }
+        //}
     }
 }

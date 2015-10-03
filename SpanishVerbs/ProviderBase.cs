@@ -32,6 +32,7 @@ namespace SpanishVerbs
             verb.Conditional = GetConjugationPerTense(rawData, Tense.Conditional);
             verb.ConditionalPerfect = GetConjugationPerTense(rawData, Tense.ConditionalPerfect);
             verb.PreteritePerfect = GetConjugationPerTense(rawData, Tense.PreteritePerfect);
+            verb.Imperative = GetImperative(rawData);
             verb.PresentParticiple = GetGerund(rawData);
 
             if (!ValidateVerb(verb))

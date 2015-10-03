@@ -57,6 +57,7 @@
     <Compile Include="TeachMeProviderTest.cs" />
     <Compile Include="SpanishDictProviderTest.cs" />
     <Compile Include="TeachMeTestResource.cs" />
+    <Compile Include="RendererTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpanishVerbs\SpanishVerbs.csproj">

@@ -155,7 +155,7 @@ namespace SpanishVerbs
                          (verb.Preterite.Count > 0 ? 1 : 0) +
                          (verb.PreteritePerfect.Count > 0 ? 1 : 0);
 
-            string[,] verbGrid = new string[4, 6];
+            string[,] verbGrid = new string[5, 6];
             verbGrid[0, 0] = "Yo";
             verbGrid[0, 1] = "Tu";
             verbGrid[0, 2] = "El/Ella/Ud";
@@ -165,9 +165,11 @@ namespace SpanishVerbs
 
             for (int i = 0; i < 6; i++)
             {
-                verbGrid[1, i] = verb.Present[(Person)i];
-                verbGrid[2, i] = verb.PresentPerfect[(Person)i];
-                verbGrid[3, i] = verb.Preterite[(Person)i];
+                var person = (Person)i;
+                verbGrid[1, i] = verb.Present.ContainsKey(person) ? verb.Present[person] : string.Empty ;
+                verbGrid[2, i] = verb.PresentPerfect.ContainsKey(person) ? verb.PresentPerfect[person] : string.Empty;
+                verbGrid[3, i] = verb.Preterite.ContainsKey(person) ? verb.Preterite[person] : string.Empty;
+                verbGrid[4, i] = verb.Imperative.ContainsKey(person) ? verb.Imperative[person] : string.Empty;
             }
 
             return TableFromArray(3, verb.PresentParticiple, verbGrid);
@@ -260,15 +262,16 @@ namespace SpanishVerbs
         {
             if(e.KeyCode == Keys.Enter)
             {
-                if (checkBox1.Checked)
+                if (!checkBox1.Checked)
                 {
                     IProviderBase provider = _providers.Where(p => p == comboBox1.SelectedValue).FirstOrDefault();
                     try
                     {
                         textBox2.Text = TableFromVerb(provider.GetConjugation(textBox3.Text));
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        textBox2.Text = string.Format("{0}=\r\n{1}", ex.Message, ex.StackTrace);
                     }
                 }
                 else
@@ -280,8 +283,9 @@ namespace SpanishVerbs
                         {
                             verbTable = TableFromVerb(provider.GetConjugation(textBox3.Text));
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
+                            textBox2.Text = string.Format("{0}=\r\n{1}", ex.Message, ex.StackTrace);
                         }
 
                         if (!string.IsNullOrEmpty(verbTable))
