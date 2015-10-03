@@ -36,6 +36,20 @@ namespace SpanishVerbs.Test
         }
 
         [TestMethod]
+        public void LoadImperative()
+        {
+            Dictionary<Person, string> tense = new BabLaProvider("").GetImperative(SpanishDictTestResource.Page);
+            Assert.AreEqual(5, tense.Count);
+            Assert.AreEqual("ten", tense[Person.SecondSingle]);
+            Assert.AreEqual("tenga", tense[Person.ThirdSingle]);
+            Assert.AreEqual("tengamos", tense[Person.FirstPlural]);
+            Assert.AreEqual("tened", tense[Person.SecondPlural]);
+            Assert.AreEqual("tengan", tense[Person.ThirdPlural]);
+            Assert.IsFalse(tense.ContainsKey(Person.FirstSingle));
+        }
+
+
+        [TestMethod]
         public void LoadConjugation()
         {
             string page =
