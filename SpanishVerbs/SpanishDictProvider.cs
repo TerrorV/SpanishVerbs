@@ -23,7 +23,7 @@ namespace SpanishVerbs
             doc.LoadHtml(rawData);
             HtmlNode gerund = doc.DocumentNode.SelectNodes(@"//div[contains(@class,'conj-row')]/span").ElementAt(0);
 
-            return gerund.InnerText;
+            return gerund.InnerText.Remove(0, 5).TrimEnd(';');
         }
 
         public override bool ValidateVerb(Verb verb)

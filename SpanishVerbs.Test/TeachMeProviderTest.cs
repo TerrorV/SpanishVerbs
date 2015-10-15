@@ -138,5 +138,15 @@ namespace SpanishVerbs.Test
             Assert.IsFalse(tense.ContainsKey(Person.FirstSingle));
 
         }
+
+
+        [TestMethod]
+        public void LoadResourceFromSite()
+        {
+            var provider = new TeachMeProvider("http://www.123teachme.com/spanish_verb_conjugation/{0}");
+            var page = provider.CallWebSite("abandonar");
+            var gerund = provider.GetGerund(page);
+            Assert.AreEqual("abandonando", gerund);
+        }
     }
 }

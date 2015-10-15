@@ -53,7 +53,24 @@ namespace SpanishVerbs.Test
             //añadir
             string gerund = new SpanishDictProvider("").GetGerund(SpanishDictTestResource.Page);
 
-            Assert.AreEqual("&nbspteniendo", gerund);
+            Assert.AreEqual("teniendo", gerund);
+
+            gerund = new SpanishDictProvider("").GetGerund(SpanishDictTestResource.Page2);
+
+            Assert.AreEqual("andando", gerund);
+
+            gerund = new SpanishDictProvider("").GetGerund(SpanishDictTestResource.Page3);
+
+            Assert.AreEqual("añadiendo", gerund);
+        }
+
+        [TestMethod]
+        public void LoadResourceFromSite()
+        {
+            var provider = new SpanishDictProvider("http://www.spanishdict.com/conjugate/{0}");
+            var page = provider.CallWebSite("abandonar");
+            var gerund = provider.GetGerund(page);
+            Assert.AreEqual("abandonando", gerund);
         }
     }
 }
