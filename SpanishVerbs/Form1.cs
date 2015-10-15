@@ -267,7 +267,7 @@ namespace SpanishVerbs
                     IProviderBase provider = _providers.Where(p => p == comboBox1.SelectedValue).FirstOrDefault();
                     try
                     {
-                        textBox2.Text = TableFromVerb(provider.GetConjugation(textBox3.Text));
+                        textBox2.Text = TableFromVerb(provider.GetConjugation(textBox3.Text.Trim()));
                     }
                     catch (Exception ex)
                     {
@@ -281,7 +281,7 @@ namespace SpanishVerbs
                         string verbTable = string.Empty;
                         try
                         {
-                            verbTable = TableFromVerb(provider.GetConjugation(textBox3.Text));
+                            verbTable = TableFromVerb(provider.GetConjugation(textBox3.Text.Trim()));
                         }
                         catch (Exception ex)
                         {
@@ -295,6 +295,8 @@ namespace SpanishVerbs
                         }
                     }
                 }
+
+                textBox3.Text = string.Empty;
             }
         }
 
