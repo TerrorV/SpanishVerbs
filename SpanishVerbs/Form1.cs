@@ -196,6 +196,9 @@ namespace SpanishVerbs
             {
                 //textBox2.Paste();
             }
+
+            e.Handled = true;
+            e.SuppressKeyPress = true;
         }
 
         //private void textBox1_KeyDown(object sender, KeyEventArgs e)
@@ -298,6 +301,14 @@ namespace SpanishVerbs
 
                 textBox3.Text = string.Empty;
             }
+
+            if (e.Control && e.KeyCode == Keys.A)
+            {
+                textBox3.SelectAll();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+
         }
 
         //private string TableFromSpanishDict(string p)
