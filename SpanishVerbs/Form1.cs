@@ -137,7 +137,7 @@ namespace SpanishVerbs
                 }
                 sb.AppendLine("</tr>");
             }
-            sb.Append(string.Format("<tr><td colspan='{0}'>", numberOfTenses + 1)).Append(gerund).AppendLine("</td><tr>");
+            sb.Append(string.Format("<tr><td colspan='{0}'>", numberOfTenses + 2)).Append(gerund).AppendLine("</td><tr>");
             sb.Append("</table>");
             return sb.ToString();
         }
