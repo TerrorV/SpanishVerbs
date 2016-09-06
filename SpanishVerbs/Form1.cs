@@ -169,7 +169,8 @@ namespace SpanishVerbs
                 verbGrid[1, i] = verb.Present.ContainsKey(person) ? verb.Present[person] : string.Empty ;
                 verbGrid[2, i] = verb.PresentPerfect.ContainsKey(person) ? verb.PresentPerfect[person] : string.Empty;
                 verbGrid[3, i] = verb.Preterite.ContainsKey(person) ? verb.Preterite[person] : string.Empty;
-                verbGrid[4, i] = verb.Imperative.ContainsKey(person) ? verb.Imperative[person] : string.Empty;
+                verbGrid[4, i] = verb.Imperfect.ContainsKey(person) ? verb.Imperfect[person] : string.Empty;
+                verbGrid[5, i] = verb.Imperative.ContainsKey(person) ? verb.Imperative[person] : string.Empty;
             }
 
             return TableFromArray(3, verb.PresentParticiple, verbGrid);

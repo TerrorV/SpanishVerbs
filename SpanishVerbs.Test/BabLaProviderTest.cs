@@ -15,30 +15,30 @@ namespace SpanishVerbs.Test
 </section>
 <div class=""bab20""></div>
 ";
-            Dictionary<Person,string> tense = new BabLaProvider("").GetConjugationPerTense(page,Tense.Present);
+            Dictionary<Person,string> tense = new BabLaProvider("").GetConjugationPerTense(BabLaTestResource.Page2, Tense.Present);
 
             Assert.AreEqual(6, tense.Count);
-            Assert.AreEqual("como", tense[Person.FirstSingle]);
-            Assert.AreEqual("comes", tense[Person.SecondSingle]);
-            Assert.AreEqual("come", tense[Person.ThirdSingle]);
-            Assert.AreEqual("comemos", tense[Person.FirstPlural]);
-            Assert.AreEqual("coméis", tense[Person.SecondPlural]);
-            Assert.AreEqual("comen", tense[Person.ThirdPlural]);
+            Assert.AreEqual("tengo", tense[Person.FirstSingle]);
+            Assert.AreEqual("tienes", tense[Person.SecondSingle]);
+            Assert.AreEqual("tiene", tense[Person.ThirdSingle]);
+            Assert.AreEqual("tenemos", tense[Person.FirstPlural]);
+            Assert.AreEqual("tenéis", tense[Person.SecondPlural]);
+            Assert.AreEqual("tienen", tense[Person.ThirdPlural]);
 
-            tense = new BabLaProvider("").GetConjugationPerTense(page, Tense.Imperfect);
+            tense = new BabLaProvider("").GetConjugationPerTense(BabLaTestResource.Page2, Tense.Imperfect);
             Assert.AreEqual(6, tense.Count);
-            Assert.AreEqual("comía", tense[Person.FirstSingle]);
-            Assert.AreEqual("comías", tense[Person.SecondSingle]);
-            Assert.AreEqual("comía", tense[Person.ThirdSingle]);
-            Assert.AreEqual("comíamos", tense[Person.FirstPlural]);
-            Assert.AreEqual("comíais", tense[Person.SecondPlural]);
-            Assert.AreEqual("comían", tense[Person.ThirdPlural]);
+            Assert.AreEqual("tenía", tense[Person.FirstSingle]);
+            Assert.AreEqual("tenías", tense[Person.SecondSingle]);
+            Assert.AreEqual("tenía", tense[Person.ThirdSingle]);
+            Assert.AreEqual("teníamos", tense[Person.FirstPlural]);
+            Assert.AreEqual("teníais", tense[Person.SecondPlural]);
+            Assert.AreEqual("tenían", tense[Person.ThirdPlural]);
         }
 
         [TestMethod]
         public void LoadImperative()
         {
-            Dictionary<Person, string> tense = new BabLaProvider("").GetImperative(SpanishDictTestResource.Page);
+            Dictionary<Person, string> tense = new BabLaProvider("").GetImperative(BabLaTestResource.Page2);
             Assert.AreEqual(5, tense.Count);
             Assert.AreEqual("ten", tense[Person.SecondSingle]);
             Assert.AreEqual("tenga", tense[Person.ThirdSingle]);

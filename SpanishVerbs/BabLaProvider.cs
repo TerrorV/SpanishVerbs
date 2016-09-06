@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +51,8 @@ namespace SpanishVerbs
                 verb.Present.Count > 0 ||
                 verb.PresentPerfect.Count > 0 ||
                 verb.Preterite.Count > 0 ||
-                verb.PreteritePerfect.Count > 0;
+                verb.PreteritePerfect.Count > 0 ||
+                verb.Imperative.Count > 0;
 
                 return isValid;
         }
@@ -141,11 +143,31 @@ namespace SpanishVerbs
             return conjugation;
         }
 
+        public Dictionary<Person, string> ExtractConjugationFromMatches(IEnumerable<string> matchCollection)
+        {
+            Dictionary<Person, string> conjugation = new Dictionary<Person, string>();
+            if (matchCollection.Count() < 6)
+                return conjugation;
+
+            for (int i = 0; i < 6; i++)
+            {
+                string currentConjugation = matchCollection.ElementAt(i).Trim();
+                if (Regex.IsMatch(currentConjugation, @"\w+"))
+                {
+                    conjugation.Add((Person)i, currentConjugation);
+                }
+            }
+
+            return conjugation;
+        }
+
+
+
         public override IEnumerable<Match> FindMatchesPerTense(string page, string tenseKeyword)
         {
-            Regex rxTense = new Regex(string.Format(@"<h5 [^>]*>({0})</h5>(<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*)*", tenseKeyword));
+            Regex rxTense = new Regex(string.Format(@"<table>((?!table).)*({0})((?!table).)*</table>", tenseKeyword));
 
-            Regex rxRow = new Regex(@"<span [^>]*>([\w/]*)</span>\s*([\s\w]*)(<br>)*");
+            Regex rxRow = new Regex(@"<tr[^>]*><td[^>]*>([\w/]+)</td>\s*<td[^>]*>([\w\s]+)</td>\s*</tr>");
 
             Match tenseMatch = rxTense.Match(page);
 
@@ -155,7 +177,37 @@ namespace SpanishVerbs
 
         public override Dictionary<Person, string> GetImperative(string rawData)
         {
-            throw new NotImplementedException();
+            string tenseKeyword;
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(rawData);
+
+            if (doc.ParseErrors != null && doc.ParseErrors.Count() > 0)
+            {
+                // Handle any parse errors as required
+            }
+            List<string> tenseMatches = new List<string>();
+            if (doc.DocumentNode != null)
+            {
+                //HtmlNode preteriteNode = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[4]");
+                //string preterite = preteriteNode.SelectSingleNode("//span").InnerText;
+                //HtmlNode conjugationTable = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[6]/table");
+                HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//b[contains(text(),'Imperativo')]/../../../tr/td[2]/text()");
+                HtmlNodeCollection words1 = doc.DocumentNode.SelectNodes(@"//b");
+                int tenseIndex = 0;// GetTenseIndex(GetKeyword(Tense.Imperative));
+
+                for (int i = 0; i < 5; i++)
+                {
+                    //TODO i * 5 needs to be configurable to account for the Imperative and few other things (or extract it in another method)
+                    tenseMatches.Add(words.ElementAt(i + tenseIndex).InnerText);
+                }
+            }
+
+            tenseMatches.Insert(0, "a");
+
+            var result = ExtractConjugationFromMatches(tenseMatches);
+            result.Remove(Person.FirstSingle);
+
+            return result;
         }
     }
 }
