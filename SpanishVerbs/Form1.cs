@@ -155,7 +155,7 @@ namespace SpanishVerbs
                          (verb.Preterite.Count > 0 ? 1 : 0) +
                          (verb.PreteritePerfect.Count > 0 ? 1 : 0);
 
-            string[,] verbGrid = new string[5, 6];
+            string[,] verbGrid = new string[6, 6];
             verbGrid[0, 0] = "Yo";
             verbGrid[0, 1] = "Tu";
             verbGrid[0, 2] = "El/Ella/Ud";

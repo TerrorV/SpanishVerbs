@@ -21,9 +21,11 @@ namespace SpanishVerbs
         {
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(rawData);
-            HtmlNode gerund = doc.DocumentNode.SelectNodes(@"//div[contains(@class,'conj-row')]/span").ElementAt(0);
+            ////HtmlNode gerund = doc.DocumentNode.SelectNodes(@"//div[contains(@class,'conj-row')]/span").ElementAt(0);
+            HtmlNode gerund = doc.DocumentNode.SelectNodes(@"//span[@data-tense='presentParticiple']").ElementAt(0);
 
-            return gerund.InnerText.Remove(0, 5).TrimEnd(';');
+            ////return gerund.InnerText.Remove(0, 5).TrimEnd(';');
+            return gerund.InnerText;
         }
 
         public override bool ValidateVerb(Verb verb)
