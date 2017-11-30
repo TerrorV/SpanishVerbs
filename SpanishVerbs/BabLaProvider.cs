@@ -197,6 +197,7 @@ namespace SpanishVerbs
             //string preterite = preteriteNode.SelectSingleNode("//span").InnerText;
             //HtmlNode conjugationTable = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[6]/table");
             HtmlNodeCollection words = doc.DocumentNode.SelectNodes(string.Format(@"((//h3[contains(text(),'{0}')])[1]/../div/div[@class='conj-result'])", tenseKeyword));
+            HtmlNodeCollection words1 = doc.DocumentNode.SelectNodes(string.Format(@"((//h3[contains(text(),'{0}')])[1]/../div/div[@class='conj-result'])", tenseKeyword));
             int tenseIndex = 0;// GetTenseIndex(GetKeyword(Tense.Imperative));
 
             for (int i = 0; i < 6; i++)

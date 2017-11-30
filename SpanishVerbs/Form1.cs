@@ -10,12 +10,16 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SpanishVerb.DAL.Abstract;
+using SpanishVerb.DAL.SQLite;
 
 namespace SpanishVerbs
 {
     public partial class Form1 : Form
     {
         List<IProviderBase> _providers = new List<IProviderBase>();
+        IConnectionStringProvider _connectionStringProvider;
+        IStorageProvider _storageProvider;
 
         public Form1()
         {
@@ -24,6 +28,8 @@ namespace SpanishVerbs
             _providers.Add(new BabLaProvider("http://en.bab.la/conjugation/spanish/{0}"));
             _providers.Add(new SpanishDictProvider("http://www.spanishdict.com/conjugate/{0}"));
             comboBox1.DataSource = _providers;
+            _connectionStringProvider = new ConnectionStringProvider();
+
             //comboBox1.Items.Insert(0, "");
         }
 
@@ -309,6 +315,20 @@ namespace SpanishVerbs
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
+
+        }
+
+        private void openDb_Click(object sender, EventArgs e)
+        {
+            dbSelector.FileOk += DbSelector_FileOk;
+            dbSelector.ShowDialog();
+        }
+
+        private void DbSelector_FileOk(object sender, CancelEventArgs e)
+        {
+            var connectionString = _connectionStringProvider.GetConnectionStringFromPath("AnkiModel", dbSelector.FileName);
+            _storageProvider = new AnkiProvider(connectionString);
+            var verbs =_storageProvider.GetAllVerbs();
 
         }
 

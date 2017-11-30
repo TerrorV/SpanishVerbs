@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AnkiModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="Data Source=E:\Projects\AnkiSQLite\AnkiSQLite\DB\collection.anki2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="cards">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="nid" Type="integer" Nullable="false" />
+          <Property Name="did" Type="integer" Nullable="false" />
+          <Property Name="ord" Type="integer" Nullable="false" />
+          <Property Name="mod" Type="integer" Nullable="false" />
+          <Property Name="usn" Type="integer" Nullable="false" />
+          <Property Name="type" Type="integer" Nullable="false" />
+          <Property Name="queue" Type="integer" Nullable="false" />
+          <Property Name="due" Type="integer" Nullable="false" />
+          <Property Name="ivl" Type="integer" Nullable="false" />
+          <Property Name="factor" Type="integer" Nullable="false" />
+          <Property Name="reps" Type="integer" Nullable="false" />
+          <Property Name="lapses" Type="integer" Nullable="false" />
+          <Property Name="left" Type="integer" Nullable="false" />
+          <Property Name="odue" Type="integer" Nullable="false" />
+          <Property Name="odid" Type="integer" Nullable="false" />
+          <Property Name="flags" Type="integer" Nullable="false" />
+          <Property Name="data" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+        </EntityType>
+        <EntityType Name="col">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="crt" Type="integer" Nullable="false" />
+          <Property Name="mod" Type="integer" Nullable="false" />
+          <Property Name="scm" Type="integer" Nullable="false" />
+          <Property Name="ver" Type="integer" Nullable="false" />
+          <Property Name="dty" Type="integer" Nullable="false" />
+          <Property Name="usn" Type="integer" Nullable="false" />
+          <Property Name="ls" Type="integer" Nullable="false" />
+          <Property Name="conf" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+          <Property Name="models" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+          <Property Name="decks" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+          <Property Name="dconf" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+          <Property Name="tags" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'main.graves' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="graves">
+          <Key>
+            <PropertyRef Name="usn" />
+            <PropertyRef Name="oid" />
+            <PropertyRef Name="type" />
+          </Key>
+          <Property Name="usn" Type="integer" Nullable="false" />
+          <Property Name="oid" Type="integer" Nullable="false" />
+          <Property Name="type" Type="integer" Nullable="false" />
+        </EntityType>
+        <EntityType Name="notes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="guid" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+          <Property Name="mid" Type="integer" Nullable="false" />
+          <Property Name="mod" Type="integer" Nullable="false" />
+          <Property Name="usn" Type="integer" Nullable="false" />
+          <Property Name="tags" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+          <Property Name="flds" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+          <Property Name="sfld" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+          <Property Name="csum" Type="integer" Nullable="false" />
+          <Property Name="flags" Type="integer" Nullable="false" />
+          <Property Name="data" Type="nvarchar" MaxLength="2147483647" Nullable="false" />
+        </EntityType>
+        <EntityType Name="revlog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="integer" Nullable="false" />
+          <Property Name="cid" Type="integer" Nullable="false" />
+          <Property Name="usn" Type="integer" Nullable="false" />
+          <Property Name="ease" Type="integer" Nullable="false" />
+          <Property Name="ivl" Type="integer" Nullable="false" />
+          <Property Name="lastIvl" Type="integer" Nullable="false" />
+          <Property Name="factor" Type="integer" Nullable="false" />
+          <Property Name="time" Type="integer" Nullable="false" />
+          <Property Name="type" Type="integer" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="AnkiModelStoreContainer">
+          <EntitySet Name="cards" EntityType="Self.cards" store:Type="Tables" />
+          <EntitySet Name="col" EntityType="Self.col" store:Type="Tables" />
+          <EntitySet Name="notes" EntityType="Self.notes" store:Type="Tables" />
+          <EntitySet Name="revlog" EntityType="Self.revlog" store:Type="Tables" />
+          <EntitySet Name="graves" EntityType="Self.graves" store:Type="Tables">
+            <DefiningQuery>SELECT 
+[graves].[usn] AS [usn], 
+[graves].[oid] AS [oid], 
+[graves].[type] AS [type]
+FROM [graves] AS [graves]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AnkiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="card">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="nid" Type="Int64" Nullable="false" />
+          <Property Name="did" Type="Int64" Nullable="false" />
+          <Property Name="ord" Type="Int64" Nullable="false" />
+          <Property Name="mod" Type="Int64" Nullable="false" />
+          <Property Name="usn" Type="Int64" Nullable="false" />
+          <Property Name="type" Type="Int64" Nullable="false" />
+          <Property Name="queue" Type="Int64" Nullable="false" />
+          <Property Name="due" Type="Int64" Nullable="false" />
+          <Property Name="ivl" Type="Int64" Nullable="false" />
+          <Property Name="factor" Type="Int64" Nullable="false" />
+          <Property Name="reps" Type="Int64" Nullable="false" />
+          <Property Name="lapses" Type="Int64" Nullable="false" />
+          <Property Name="left" Type="Int64" Nullable="false" />
+          <Property Name="odue" Type="Int64" Nullable="false" />
+          <Property Name="odid" Type="Int64" Nullable="false" />
+          <Property Name="flags" Type="Int64" Nullable="false" />
+          <Property Name="data" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="col">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="crt" Type="Int64" Nullable="false" />
+          <Property Name="mod" Type="Int64" Nullable="false" />
+          <Property Name="scm" Type="Int64" Nullable="false" />
+          <Property Name="ver" Type="Int64" Nullable="false" />
+          <Property Name="dty" Type="Int64" Nullable="false" />
+          <Property Name="usn" Type="Int64" Nullable="false" />
+          <Property Name="ls" Type="Int64" Nullable="false" />
+          <Property Name="conf" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="models" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="decks" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dconf" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="tags" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="note">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="guid" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="mid" Type="Int64" Nullable="false" />
+          <Property Name="mod" Type="Int64" Nullable="false" />
+          <Property Name="usn" Type="Int64" Nullable="false" />
+          <Property Name="tags" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="flds" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sfld" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="csum" Type="Int64" Nullable="false" />
+          <Property Name="flags" Type="Int64" Nullable="false" />
+          <Property Name="data" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="revlog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="cid" Type="Int64" Nullable="false" />
+          <Property Name="usn" Type="Int64" Nullable="false" />
+          <Property Name="ease" Type="Int64" Nullable="false" />
+          <Property Name="ivl" Type="Int64" Nullable="false" />
+          <Property Name="lastIvl" Type="Int64" Nullable="false" />
+          <Property Name="factor" Type="Int64" Nullable="false" />
+          <Property Name="time" Type="Int64" Nullable="false" />
+          <Property Name="type" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="grave">
+          <Key>
+            <PropertyRef Name="usn" />
+            <PropertyRef Name="oid" />
+            <PropertyRef Name="type" />
+          </Key>
+          <Property Name="usn" Type="Int64" Nullable="false" />
+          <Property Name="oid" Type="Int64" Nullable="false" />
+          <Property Name="type" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="AnkiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="cards" EntityType="Self.card" />
+          <EntitySet Name="cols" EntityType="Self.col" />
+          <EntitySet Name="notes" EntityType="Self.note" />
+          <EntitySet Name="revlogs" EntityType="Self.revlog" />
+          <EntitySet Name="graves" EntityType="Self.grave" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AnkiModelStoreContainer" CdmEntityContainer="AnkiEntities">
+          <EntitySetMapping Name="cards">
+            <EntityTypeMapping TypeName="AnkiModel.card">
+              <MappingFragment StoreEntitySet="cards">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nid" ColumnName="nid" />
+                <ScalarProperty Name="did" ColumnName="did" />
+                <ScalarProperty Name="ord" ColumnName="ord" />
+                <ScalarProperty Name="mod" ColumnName="mod" />
+                <ScalarProperty Name="usn" ColumnName="usn" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="queue" ColumnName="queue" />
+                <ScalarProperty Name="due" ColumnName="due" />
+                <ScalarProperty Name="ivl" ColumnName="ivl" />
+                <ScalarProperty Name="factor" ColumnName="factor" />
+                <ScalarProperty Name="reps" ColumnName="reps" />
+                <ScalarProperty Name="lapses" ColumnName="lapses" />
+                <ScalarProperty Name="left" ColumnName="left" />
+                <ScalarProperty Name="odue" ColumnName="odue" />
+                <ScalarProperty Name="odid" ColumnName="odid" />
+                <ScalarProperty Name="flags" ColumnName="flags" />
+                <ScalarProperty Name="data" ColumnName="data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cols">
+            <EntityTypeMapping TypeName="AnkiModel.col">
+              <MappingFragment StoreEntitySet="col">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="crt" ColumnName="crt" />
+                <ScalarProperty Name="mod" ColumnName="mod" />
+                <ScalarProperty Name="scm" ColumnName="scm" />
+                <ScalarProperty Name="ver" ColumnName="ver" />
+                <ScalarProperty Name="dty" ColumnName="dty" />
+                <ScalarProperty Name="usn" ColumnName="usn" />
+                <ScalarProperty Name="ls" ColumnName="ls" />
+                <ScalarProperty Name="conf" ColumnName="conf" />
+                <ScalarProperty Name="models" ColumnName="models" />
+                <ScalarProperty Name="decks" ColumnName="decks" />
+                <ScalarProperty Name="dconf" ColumnName="dconf" />
+                <ScalarProperty Name="tags" ColumnName="tags" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="notes">
+            <EntityTypeMapping TypeName="AnkiModel.note">
+              <MappingFragment StoreEntitySet="notes">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="guid" ColumnName="guid" />
+                <ScalarProperty Name="mid" ColumnName="mid" />
+                <ScalarProperty Name="mod" ColumnName="mod" />
+                <ScalarProperty Name="usn" ColumnName="usn" />
+                <ScalarProperty Name="tags" ColumnName="tags" />
+                <ScalarProperty Name="flds" ColumnName="flds" />
+                <ScalarProperty Name="sfld" ColumnName="sfld" />
+                <ScalarProperty Name="csum" ColumnName="csum" />
+                <ScalarProperty Name="flags" ColumnName="flags" />
+                <ScalarProperty Name="data" ColumnName="data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="revlogs">
+            <EntityTypeMapping TypeName="AnkiModel.revlog">
+              <MappingFragment StoreEntitySet="revlog">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="cid" ColumnName="cid" />
+                <ScalarProperty Name="usn" ColumnName="usn" />
+                <ScalarProperty Name="ease" ColumnName="ease" />
+                <ScalarProperty Name="ivl" ColumnName="ivl" />
+                <ScalarProperty Name="lastIvl" ColumnName="lastIvl" />
+                <ScalarProperty Name="factor" ColumnName="factor" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="graves">
+            <EntityTypeMapping TypeName="AnkiModel.grave">
+              <MappingFragment StoreEntitySet="graves">
+                <ScalarProperty Name="usn" ColumnName="usn" />
+                <ScalarProperty Name="oid" ColumnName="oid" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

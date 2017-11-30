@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpanishVerbs", "SpanishVerbs\SpanishVerbs.csproj", "{CED3F7A5-D27E-4970-905F-73D831C59A53}"
 EndProject
@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9FC918
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpanishVerb.DAL.SQLite", "SpanishVerb.DAL.SQLite\SpanishVerb.DAL.SQLite.csproj", "{989A48D2-3DD3-4308-8A8D-24F1A83428EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpanishVerb.DAL.Abstract", "SpanishVerb.DAL.Abstract\SpanishVerb.DAL.Abstract.csproj", "{25E7B31D-E9AE-4735-B265-BC3209687B16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,8 +32,19 @@ Global
 		{3770A908-3FDA-49A3-B97A-F2D7F017A951}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3770A908-3FDA-49A3-B97A-F2D7F017A951}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3770A908-3FDA-49A3-B97A-F2D7F017A951}.Release|Any CPU.Build.0 = Release|Any CPU
+		{989A48D2-3DD3-4308-8A8D-24F1A83428EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{989A48D2-3DD3-4308-8A8D-24F1A83428EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{989A48D2-3DD3-4308-8A8D-24F1A83428EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{989A48D2-3DD3-4308-8A8D-24F1A83428EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25E7B31D-E9AE-4735-B265-BC3209687B16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25E7B31D-E9AE-4735-B265-BC3209687B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25E7B31D-E9AE-4735-B265-BC3209687B16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25E7B31D-E9AE-4735-B265-BC3209687B16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {011D50C7-E26F-4474-8E98-2E231ED50003}
 	EndGlobalSection
 EndGlobal

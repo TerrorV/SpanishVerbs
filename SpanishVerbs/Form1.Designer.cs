@@ -32,6 +32,8 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.openDb = new System.Windows.Forms.Button();
+            this.dbSelector = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // textBox2
@@ -43,7 +45,7 @@
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox2.Size = new System.Drawing.Size(872, 467);
+            this.textBox2.Size = new System.Drawing.Size(790, 467);
             this.textBox2.TabIndex = 1;
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             this.textBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyDown);
@@ -81,11 +83,26 @@
             this.comboBox1.Size = new System.Drawing.Size(200, 21);
             this.comboBox1.TabIndex = 4;
             // 
+            // openDb
+            // 
+            this.openDb.Location = new System.Drawing.Point(797, 28);
+            this.openDb.Name = "openDb";
+            this.openDb.Size = new System.Drawing.Size(75, 23);
+            this.openDb.TabIndex = 5;
+            this.openDb.Text = "...";
+            this.openDb.UseVisualStyleBackColor = true;
+            this.openDb.Click += new System.EventHandler(this.openDb_Click);
+            // 
+            // dbSelector
+            // 
+            this.dbSelector.FileName = "dbSelector";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(884, 507);
+            this.Controls.Add(this.openDb);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.textBox3);
@@ -103,6 +120,8 @@
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button openDb;
+        private System.Windows.Forms.OpenFileDialog dbSelector;
     }
 }
 
