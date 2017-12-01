@@ -172,7 +172,7 @@ namespace SpanishVerbs
             for (int i = 0; i < 6; i++)
             {
                 var person = (Person)i;
-                verbGrid[1, i] = verb.Present.ContainsKey(person) ? verb.Present[person] : string.Empty ;
+                verbGrid[1, i] = verb.Present.ContainsKey(person) ? verb.Present[person] : string.Empty;
                 verbGrid[2, i] = verb.PresentPerfect.ContainsKey(person) ? verb.PresentPerfect[person] : string.Empty;
                 verbGrid[3, i] = verb.Preterite.ContainsKey(person) ? verb.Preterite[person] : string.Empty;
                 verbGrid[4, i] = verb.Imperfect.ContainsKey(person) ? verb.Imperfect[person] : string.Empty;
@@ -270,7 +270,7 @@ namespace SpanishVerbs
 
         private void textBox3_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 if (!checkBox1.Checked)
                 {
@@ -328,7 +328,32 @@ namespace SpanishVerbs
         {
             var connectionString = _connectionStringProvider.GetConnectionStringFromPath("AnkiModel", dbSelector.FileName);
             _storageProvider = new AnkiProvider(connectionString);
-            var verbs =_storageProvider.GetAllVerbs();
+            var verbs = _storageProvider.GetAllVerbs();
+            foreach (var verb in verbs)
+            {
+
+                foreach (IProviderBase provider in _providers)
+                {
+                    string verbTable = string.Empty;
+                    try
+                    {
+                        verbTable = TableFromVerb(provider.GetConjugation(verb.Front));
+                    }
+                    catch (Exception ex)
+                    {
+                        textBox2.Text = string.Format("{0}=\r\n{1}", ex.Message, ex.StackTrace);
+                    }
+
+                    if (!string.IsNullOrEmpty(verbTable))
+                    {
+                        verb.Details = verbTable;
+                        break;
+                    }
+                }
+
+                _storageProvider.SaveNote(verb);
+            }
+
 
         }
 
