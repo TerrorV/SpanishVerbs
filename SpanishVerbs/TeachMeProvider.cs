@@ -15,29 +15,7 @@ namespace SpanishVerbs
         {
 
         }
-        //public Verb GetConjugation(string rawData)
-        //{
-        //    Verb verb = new Verb();
-        //    verb.Present = GetConjugationPerTense(rawData, Tense.Present);
-        //    verb.PresentPerfect = GetConjugationPerTense(rawData, Tense.PresentPerfect);
-        //    verb.Imperfect = GetConjugationPerTense(rawData, Tense.Imperfect);
-        //    verb.Preterite = GetConjugationPerTense(rawData, Tense.Preterite);
-        //    verb.PastPerfect = GetConjugationPerTense(rawData, Tense.PastPerfect);
-        //    verb.Future = GetConjugationPerTense(rawData, Tense.Future);
-        //    verb.FuturePerfect = GetConjugationPerTense(rawData, Tense.FuturePerfect);
-        //    verb.Conditional = GetConjugationPerTense(rawData, Tense.Conditional);
-        //    verb.ConditionalPerfect = GetConjugationPerTense(rawData, Tense.ConditionalPerfect);
-        //    verb.PreteritePerfect = GetConjugationPerTense(rawData, Tense.PreteritePerfect);
-        //    verb.PresentParticiple = GetGerund(rawData);
 
-
-        //    if (!ValidateVerb(verb))
-        //    {
-        //        throw new Exception();
-        //    }
-
-        //    return verb;
-        //}
 
         public override bool ValidateVerb(Verb verb)
         {
@@ -67,38 +45,6 @@ namespace SpanishVerbs
 
             return rxRow.Matches( match.Value)[1].Groups[1].Value;
         }
-
-        //private Dictionary<Person, string> GetConjugationPerTense(string rawData, Tense tense)
-        //{
-        //    //switch (tense)
-        //    //{
-        //    //    case Tense.Present:
-        //    //        //break;
-        //    //    case Tense.PresentPerfect:
-        //    //        //break;
-        //    //    case Tense.Imperfect:
-        //    //        //break;
-        //    //    case Tense.Preterite:
-        //    //        //break;
-        //    //    case Tense.PastPerfect:
-        //    //        break;
-        //    //    case Tense.Future:
-        //    //        break;
-        //    //    case Tense.FuturePerfect:
-        //    //        break;
-        //    //    case Tense.Conditional:
-        //    //        break;
-        //    //    case Tense.ConditionalPerfect:
-        //    //        break;
-        //    //    case Tense.PreteritePerfect:
-        //    //        break;
-        //    //    default:
-        //    //        //FindMatchesPerTense(tense);
-        //    //        break;
-        //    //}
-
-        //    return ExtractConjugationFromMatches(FindMatchesPerTense(rawData, GetKeyword(tense)));
-        //}
 
         public override string GetKeyword(Tense tense)
         {
@@ -155,30 +101,21 @@ namespace SpanishVerbs
             {
                 // Handle any parse errors as required
             }
+
             List<string> tenseMatches = new List<string>();
             if (doc.DocumentNode != null)
             {
-                //HtmlNode preteriteNode = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[4]");
-                //string preterite = preteriteNode.SelectSingleNode("//span").InnerText;
-                //HtmlNode conjugationTable = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[6]/table");
                 HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//h3[normalize-space(text()) = 'Imperative']/../table/tbody/tr[1]/td[position()>2]");
-
-                ////HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//td[contains(@class,'vtable-word')]");
 
                 for (int i = 0; i < 6; i++)
                 {
-                    //TODO i * 5 needs to be configurable to account for the Imperative and few other things (or extract it in another method)
                     tenseMatches.Add(words.ElementAt(i).InnerText);
                 }
             }
 
-
             var result = ExtractConjugationFromMatches(tenseMatches);
 
             return result;
-
-
-            throw new NotImplementedException();
         }
 
         public Dictionary<Person, string> ExtractConjugationFromMatches(IEnumerable<string> matchCollection)
