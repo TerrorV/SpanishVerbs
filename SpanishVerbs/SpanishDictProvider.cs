@@ -22,7 +22,7 @@ namespace SpanishVerbs
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(rawData);
             ////HtmlNode gerund = doc.DocumentNode.SelectNodes(@"//div[contains(@class,'conj-row')]/span").ElementAt(0);
-            HtmlNode gerund = doc.DocumentNode.SelectNodes(@"//span[@data-tense='presentParticiple']").ElementAt(0);
+            HtmlNode gerund = doc.DocumentNode.SelectNodes(@"//div[@class='_1MGMXB5P']").ElementAt(0);
 
             ////return gerund.InnerText.Remove(0, 5).TrimEnd(';');
             return gerund.InnerText;
@@ -109,7 +109,8 @@ namespace SpanishVerbs
                 //HtmlNode preteriteNode = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[4]");
                 //string preterite = preteriteNode.SelectSingleNode("//span").InnerText;
                 //HtmlNode conjugationTable = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[6]/table");
-                HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//td[contains(@class,'vtable-word')]");
+                HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//div[@class='_1kOv9vAh']");
+                ////HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//td[contains(@class,'vtable-word')]");
                 int tenseIndex = GetTenseIndex(tenseKeyword);
 
                 for (int i = 0; i < 6; i++)
@@ -135,13 +136,13 @@ namespace SpanishVerbs
                     mainTypeIndex = 30;
                     break;
                 case "Imperative":
-                    mainTypeIndex = 49;
+                    mainTypeIndex = 54;
                     break;
                 case "Perfect":
-                    mainTypeIndex = 60;
+                    mainTypeIndex = 94;
                     break;
                 case "PerfectSubjunctive":
-                    mainTypeIndex = 90;
+                    mainTypeIndex = 126;
                     break;
                 default:
                     mainTypeIndex = 0;
@@ -152,7 +153,7 @@ namespace SpanishVerbs
             switch (testType[1])
             {
                 case "Imperative":
-                    tenseTypeIndex = 5;
+                    tenseTypeIndex = 0;
                     break;
                 case "Present":
                     tenseTypeIndex = 0;
@@ -203,13 +204,16 @@ namespace SpanishVerbs
                 //HtmlNode preteriteNode = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[4]");
                 //string preterite = preteriteNode.SelectSingleNode("//span").InnerText;
                 //HtmlNode conjugationTable = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[6]/table");
-                HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//td[contains(@class,'vtable-word')]");
+                HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//div[@class='_1kOv9vAh']");
+
+                ////HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//td[contains(@class,'vtable-word')]");
                 int tenseIndex = GetTenseIndex(GetKeyword(Tense.Imperative));
 
-                for (int i = 0; i < 6; i++)
+                tenseMatches.Add("-");
+                for (int i = 0; i < 5; i++)
                 {
                     //TODO i * 5 needs to be configurable to account for the Imperative and few other things (or extract it in another method)
-                    tenseMatches.Add(words.ElementAt(i + tenseIndex).InnerText);
+                    tenseMatches.Add(words.ElementAt(i * 2 + tenseIndex).InnerText);
                 }
             }
 
