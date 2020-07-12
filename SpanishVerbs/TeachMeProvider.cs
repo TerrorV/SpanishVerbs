@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -145,7 +146,57 @@ namespace SpanishVerbs
 
         public override Dictionary<Person, string> GetImperative(string rawData)
         {
+
+            string tenseKeyword;
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(rawData);
+
+            if (doc.ParseErrors != null && doc.ParseErrors.Count() > 0)
+            {
+                // Handle any parse errors as required
+            }
+            List<string> tenseMatches = new List<string>();
+            if (doc.DocumentNode != null)
+            {
+                //HtmlNode preteriteNode = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[4]");
+                //string preterite = preteriteNode.SelectSingleNode("//span").InnerText;
+                //HtmlNode conjugationTable = doc.DocumentNode.SelectSingleNode(@"html/body/div[2]/div[2]/div[2]/div[6]/table");
+                HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//h3[normalize-space(text()) = 'Imperative']/../table/tbody/tr[1]/td[position()>2]");
+
+                ////HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//td[contains(@class,'vtable-word')]");
+
+                for (int i = 0; i < 6; i++)
+                {
+                    //TODO i * 5 needs to be configurable to account for the Imperative and few other things (or extract it in another method)
+                    tenseMatches.Add(words.ElementAt(i).InnerText);
+                }
+            }
+
+
+            var result = ExtractConjugationFromMatches(tenseMatches);
+
+            return result;
+
+
             throw new NotImplementedException();
+        }
+
+        public Dictionary<Person, string> ExtractConjugationFromMatches(IEnumerable<string> matchCollection)
+        {
+            Dictionary<Person, string> conjugation = new Dictionary<Person, string>();
+            if (matchCollection.Count() < 6)
+                return conjugation;
+
+            for (int i = 0; i < 6; i++)
+            {
+                string currentConjugation = matchCollection.ElementAt(i).Trim();
+                if (Regex.IsMatch(currentConjugation, @"\w+"))
+                {
+                    conjugation.Add((Person)i, currentConjugation);
+                }
+            }
+
+            return conjugation;
         }
     }
 }
