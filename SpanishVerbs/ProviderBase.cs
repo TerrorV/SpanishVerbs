@@ -23,7 +23,7 @@ namespace SpanishVerbs
             string rawData = string.Empty;
             try
             {
-                rawData = CallWebSite(verbString);
+                rawData = CallWebSite(verbString.Split(' ').First());
                 Verb verb = new Verb();
                 verb.Present = GetConjugationPerTense(rawData, Tense.Present);
                 verb.PresentPerfect = GetConjugationPerTense(rawData, Tense.PresentPerfect);
@@ -48,7 +48,7 @@ namespace SpanishVerbs
             catch (Exception ex)
             {
                 ex.Data.Add("verb", verbString);
-                ex.Data.Add("raw", rawData);
+                ////ex.Data.Add("raw", rawData);
                 throw;
             }
         }

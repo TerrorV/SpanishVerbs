@@ -281,7 +281,15 @@ namespace SpanishVerbs
                     }
                     catch (Exception ex)
                     {
-                        textBox2.Text = string.Format($"{ex.Message}\r\n{ex.StackTrace}\r\n{ex.Data}" );
+                        string temp = string.Empty;
+                        foreach (var key in ex.Data.Keys)
+                        {
+                            temp += $"{key}:{ex.Data[key]}";
+
+                        }
+
+                        textBox2.Text = string.Format($"{ex.Message}=\r\n{ex.StackTrace}\r\n\r\n\r\n{temp}");
+                        ////textBox2.Text = string.Format($"{ex.Message}\r\n{ex.StackTrace}\r\n{ex.Data}" );
                     }
                 }
                 else
@@ -295,7 +303,15 @@ namespace SpanishVerbs
                         }
                         catch (Exception ex)
                         {
-                            textBox2.Text = string.Format($"{ex.Message}\r\n{ex.StackTrace}\r\n{ex.Data}");
+                            string temp = string.Empty;
+                            foreach (var key in ex.Data.Keys)
+                            {
+                                temp += $"{key}:{ex.Data[key]}";
+
+                            }
+
+                            textBox2.Text = string.Format($"{ex.Message}=\r\n{ex.StackTrace}\r\n{temp}");
+                            ////textBox2.Text = string.Format($"{ex.Message}\r\n{ex.StackTrace}\r\n{ex.Data}");
                         }
 
                         if (!string.IsNullOrEmpty(verbTable))
@@ -341,7 +357,15 @@ namespace SpanishVerbs
                     }
                     catch (Exception ex)
                     {
-                        textBox2.Text = string.Format($"{ex.Message}=\r\n{ex.StackTrace}\r\n{ex.Data}");
+                        string temp = string.Empty;
+                        foreach (var key in ex.Data.Keys)
+                        {
+                            temp += $"{key}:{ex.Data[key]} \r\n";
+
+                        }
+
+                        textBox2.Text += string.Format($"{ex.Message}=\r\n{ex.StackTrace}\r\n{temp}");
+                        ////textBox2.Text += temp;
                     }
 
                     if (!string.IsNullOrEmpty(verbTable))

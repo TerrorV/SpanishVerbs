@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace SpanishVerbs
 {
-    public class TeachMeProvider :ProviderBase<Match>, IConjugationProvider
+    public class TeachMeProvider : ProviderBase<Match>, IConjugationProvider
     {
-        public TeachMeProvider(string providerUrl):base(providerUrl)
+        public TeachMeProvider(string providerUrl) : base(providerUrl)
         {
 
         }
@@ -36,14 +36,34 @@ namespace SpanishVerbs
 
         public override string GetGerund(string rawData)
         {
-            Regex rxTense = new Regex(@"class=""tense_heading"">\s*<a[^>]*title=""[\s\w-]+""[^>]*>(Present Participle).*\s*</td>\s*(<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+)+</tr>");
-            Regex rxRow = new Regex(@"<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+");
+            string tenseKeyword;
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(rawData);
 
-            Match match = rxTense.Match(rawData);
-            if (!match.Success)
-                return string.Empty;
+            if (doc.ParseErrors != null && doc.ParseErrors.Count() > 0)
+            {
+                // Handle any parse errors as required
+            }
 
-            return rxRow.Matches( match.Value)[1].Groups[1].Value;
+            List<string> tenseMatches = new List<string>();
+            if (doc.DocumentNode != null)
+            {
+                HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//h3[normalize-space(text()) = 'Other Forms']/../table/tbody/tr/td/a[normalize-space(text()) = 'Present Participle']/../../td[last()]");
+
+                //h3[normalize-space(text()) = 'Other Forms']/../table/tbody/tr/td/a[normalize-space(text()) = 'Present Participle']/../../td[last()]
+                ////    Regex rxTense = new Regex(@"class=""tense_heading"">\s*<a[^>]*title=""[\s\w-]+""[^>]*>(Present Participle).*\s*</td>\s*(<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+)+</tr>");
+                ////Regex rxRow = new Regex(@"<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+");
+
+                ////Match match = rxTense.Match(rawData);
+                ////if (!match.Success)
+                if (words == null || words.Count == 0)
+                    return string.Empty;
+
+                ////return rxRow.Matches(match.Value)[1].Groups[1].Value;
+                return words[0].InnerText.Trim();
+            }
+
+            return string.Empty;
         }
 
         public override string GetKeyword(Tense tense)
@@ -67,7 +87,7 @@ namespace SpanishVerbs
 
         public override Dictionary<Person, string> ExtractConjugationFromMatches(IEnumerable<Match> collection)
         {
-//            MatchCollection matchCollection = (MatchCollection)collection;
+            //            MatchCollection matchCollection = (MatchCollection)collection;
             Dictionary<Person, string> conjugation = new Dictionary<Person, string>();
             if (collection.Count() < 6)
                 return conjugation;
@@ -82,7 +102,7 @@ namespace SpanishVerbs
 
         public override IEnumerable<Match> FindMatchesPerTense(string page, string tenseKeyword)
         {
-            Regex rxTense = new Regex(string.Format(@"class=""tense_heading"">\s*<a[^>]*title=""[\s\w-]+""[^>]*>({0}).*\s*</td>\s*(<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+)+</tr>",tenseKeyword));
+            Regex rxTense = new Regex(string.Format(@"class=""tense_heading"">\s*<a[^>]*title=""[\s\w-]+""[^>]*>({0}).*\s*</td>\s*(<td\s+class=""conjugation[^""]*[^>]*>(\w+|\w+<div[^>]*>OR</div>\w+)[^<]*</td>\s+)+</tr>", tenseKeyword));
             Regex rxRow = new Regex(@"<td\s+class=""conjugation (irregular)*""[^>]*>([\w\s&;]+|[\w\s&;]+<div[^>]*>OR</div>[\w\s&;]+)[^<]*</td>\s+");
 
             Match tenseMatch = rxTense.Match(page);
@@ -107,7 +127,12 @@ namespace SpanishVerbs
             {
                 HtmlNodeCollection words = doc.DocumentNode.SelectNodes(@"//h3[normalize-space(text()) = 'Imperative']/../table/tbody/tr[1]/td[position()>2]");
 
-                for (int i = 0; i < 6; i++)
+                if (words.Count == 5)
+                {
+                    tenseMatches.Add("-");
+                }
+
+                for (int i = 0; i < words.Count; i++)
                 {
                     tenseMatches.Add(words.ElementAt(i).InnerText);
                 }
